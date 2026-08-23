@@ -175,4 +175,4 @@ Products, stock, and sales are scoped per outlet throughout the system.
 
 ## 📄 License
 
-This project is private/internal to the shop it was built for. Add a license here if you plan to open-source it.
+This project is private/internal to the shop it was built for.
