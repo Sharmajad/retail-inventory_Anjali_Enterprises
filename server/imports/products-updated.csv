@@ -1,0 +1,5 @@
+Name,Category,Barcode,Brand,Current Stock (Fill In),Cost Price (Fill In),Selling Price (Fill In)
+Ball pin,Cosmetics,,,15,10,20
+Bindi,Cosmetics,,,25,5,10
+NonExistentItem,Cosmetics,,,50,10,20
+Bleach,NonExistentCategory,,,5,20,40
