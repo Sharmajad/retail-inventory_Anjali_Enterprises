@@ -93,7 +93,7 @@ export default function DashboardLayout() {
 
   const currentOutletLabel = isOwner
     ? 'All Outlets'
-    : (user?.outlet || 'Outlet 1');
+    : (user?.outlet === 'Outlet 1' ? 'Stationary Outlet' : (user?.outlet || 'Stationary Outlet'));
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#2B2926] flex">
@@ -164,7 +164,7 @@ export default function DashboardLayout() {
                 {isOwner ? (
                   <span className="badge-role bg-[#14324B]/10 text-[#14324B]">👑 Store Owner</span>
                 ) : (
-                  <span className="badge-role bg-[#2F9E44]/10 text-[#2F9E44]">💳 {user?.outlet || 'Outlet 1'}</span>
+                  <span className="badge-role bg-[#2F9E44]/10 text-[#2F9E44]">💳 {user?.outlet === 'Outlet 1' ? 'Stationary Staff' : (user?.outlet || 'Stationary Staff')}</span>
                 )}
               </div>
             </div>
@@ -176,9 +176,9 @@ export default function DashboardLayout() {
                 onClick={() => handleSwitchToStaff('Outlet 1')}
                 disabled={switching}
                 className="py-1 px-2 rounded text-[11px] font-semibold bg-white border border-[#E8E4DC] hover:border-[#2F9E44] text-[#2F9E44] flex items-center justify-center gap-1 transition-colors cursor-pointer"
-                title="Switch to Staff (Outlet 1)"
+                title="Switch to Staff (Stationary Outlet)"
               >
-                <span>💳 Staff O1</span>
+                <span>💳 Stationary</span>
               </button>
               <button
                 onClick={() => handleSwitchToStaff('Outlet 2')}
@@ -186,7 +186,7 @@ export default function DashboardLayout() {
                 className="py-1 px-2 rounded text-[11px] font-semibold bg-white border border-[#E8E4DC] hover:border-[#14324B] text-[#14324B] flex items-center justify-center gap-1 transition-colors cursor-pointer"
                 title="Switch to Staff (Outlet 2)"
               >
-                <span>💳 Staff O2</span>
+                <span>💳 Outlet 2</span>
               </button>
             </div>
           ) : (
@@ -231,7 +231,7 @@ export default function DashboardLayout() {
                   className="text-xs font-semibold py-1.5 px-2.5 rounded-lg bg-white border border-[#E8E4DC] hover:border-[#2F9E44] text-[#2F9E44] flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <ShoppingCart className="w-3.5 h-3.5" />
-                  <span>Outlet 1 POS</span>
+                  <span>Stationary POS</span>
                 </button>
                 <button
                   onClick={() => handleSwitchToStaff('Outlet 2')}

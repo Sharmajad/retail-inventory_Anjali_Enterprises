@@ -10,7 +10,9 @@ import {
 } from 'lucide-react';
 
 export default function Products() {
-  const { isOwner } = useAuth();
+  const { user, isOwner } = useAuth();
+  const isStationaryStaff = user?.role === 'staff' && user?.outlet === 'Outlet 1';
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,9 +39,11 @@ export default function Products() {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const params = { search, category: categoryFilter, lowStock: lowStockOnly };
+      if (isStationaryStaff) params.outlet = 'Outlet 1';
       const [prodRes, catRes] = await Promise.all([
-        api.get('/products', { params: { search, category: categoryFilter, lowStock: lowStockOnly }}),
-        api.get('/categories')
+        api.get('/products', { params }),
+        api.get('/categories', { params: isStationaryStaff ? { outlet: 'Outlet 1' } : {} })
       ]);
       setProducts(prodRes.data.products);
       setCategories(catRes.data.categories);
@@ -84,9 +88,11 @@ export default function Products() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#14324B] tracking-tight flex items-center gap-2">
-            <Package className="w-6 h-6" /> Product Catalog & Inventory
+            <Package className="w-6 h-6" /> Product Catalog & Inventory {isStationaryStaff && <span className="text-sm font-semibold text-[#14324B]/70">&bull; Stationary Outlet</span>}
           </h1>
-          <p className="text-[#2B2926]/60 text-sm mt-1">Manage catalog items, pricing, restock levels, and delete inactive items.</p>
+          <p className="text-[#2B2926]/60 text-sm mt-1">
+            {isStationaryStaff ? 'Manage Stationary items, pricing, and stock levels.' : 'Manage catalog items, pricing, restock levels, and delete inactive items.'}
+          </p>
         </div>
         
         {isOwner && (
@@ -113,10 +119,16 @@ export default function Products() {
           <Search className="w-4 h-4 text-[#2B2926]/40 absolute left-3.5 top-3.5" />
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="form-input w-40 text-xs">
-            <option value="">All Categories</option>
-            {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
-          </select>
+          {!isStationaryStaff ? (
+            <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="form-input w-40 text-xs">
+              <option value="">All Categories</option>
+              {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
+            </select>
+          ) : (
+            <div className="px-3 py-2 rounded bg-[#14324B]/10 border border-[#14324B]/20 text-[#14324B] text-xs font-bold">
+              ✏️ Stationary Only
+            </div>
+          )}
           <button 
             onClick={() => setLowStockOnly(!lowStockOnly)}
             className={`px-4 py-2.5 rounded border text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer ${

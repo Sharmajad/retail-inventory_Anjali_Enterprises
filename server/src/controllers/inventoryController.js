@@ -102,10 +102,15 @@ const getStockTransactions = async (req, res) => {
 
 const getLowStockProducts = async (req, res) => {
   try {
-    const lowStockProducts = await Product.find({
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || req.query.outlet === 'Outlet 1';
+    let lowStockProducts = await Product.find({
       isActive: true,
       $expr: { $lte: ['$currentStock', '$lowStockThreshold'] }
     }).populate('category', 'name').sort('currentStock');
+
+    if (isStationaryScoped) {
+      lowStockProducts = lowStockProducts.filter(p => /station/i.test(p.category?.name || ''));
+    }
 
     res.status(200).json({
       success: true,

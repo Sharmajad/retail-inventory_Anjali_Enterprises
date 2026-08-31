@@ -59,10 +59,10 @@ export default function Sales() {
           <select
             value={outletFilter}
             onChange={e => setOutletFilter(e.target.value)}
-            className="form-input text-xs w-36"
+            className="form-input text-xs w-44 font-semibold"
           >
             <option value="All">All Outlets</option>
-            <option value="Outlet 1">Outlet 1</option>
+            <option value="Outlet 1">Stationary Outlet</option>
             <option value="Outlet 2">Outlet 2</option>
           </select>
           <input type="date" value={startDate} onChange={e=>setStartDate(e.target.value)} className="form-input text-xs w-36" />
@@ -107,7 +107,7 @@ export default function Sales() {
                     </td>
                     <td>
                       <span className="badge-role bg-[#14324B]/10 text-[#14324B] font-semibold text-xs">
-                        🏪 {sale.outlet || 'Outlet 1'}
+                        🏪 {sale.outlet === 'Outlet 1' ? 'Stationary Outlet' : (sale.outlet || 'Stationary Outlet')}
                       </span>
                     </td>
                     <td className="text-sm">{sale.items.length} items</td>

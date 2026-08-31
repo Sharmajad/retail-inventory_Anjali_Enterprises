@@ -32,9 +32,16 @@ const createPurchase = async (req, res) => {
     const productsToSave = [];
 
     for (const item of items) {
-      const product = await Product.findById(item.product);
+      const product = await Product.findById(item.product).populate('category', 'name');
       if (!product || !product.isActive) {
         return res.status(404).json({ success: false, message: `Product not found or inactive: ${item.product}` });
+      }
+
+      if (assignedOutlet === 'Outlet 1' && !/station/i.test(product.category?.name || '')) {
+        return res.status(400).json({
+          success: false,
+          message: `Stationary Outlet is restricted to Stationary products. '${product.name}' is in category '${product.category?.name || 'General'}'.`
+        });
       }
 
       const itemSubtotal = parseFloat(item.unitCostPrice) * parseInt(item.quantity);

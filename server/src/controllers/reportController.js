@@ -73,9 +73,16 @@ const getDashboardSummary = async (req, res) => {
       outletStats[key].profit = outletStats[key].revenue - outletStats[key].cost;
     });
 
-    const totalActiveProducts = await Product.countDocuments({ isActive: true });
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || outlet === 'Outlet 1';
+    let prodQuery = { isActive: true };
+    if (isStationaryScoped) {
+      const stationaryCats = await Category.find({ name: { $regex: /station/i } });
+      prodQuery.category = { $in: stationaryCats.map(c => c._id) };
+    }
+
+    const totalActiveProducts = await Product.countDocuments(prodQuery);
     const lowStockCount = await Product.countDocuments({
-      isActive: true,
+      ...prodQuery,
       $expr: { $lte: ['$currentStock', '$lowStockThreshold'] }
     });
 
@@ -286,7 +293,9 @@ const getMonthlyStatistics = async (req, res) => {
     });
 
     // Calculate category summary and margins
-    const salesByCategory = Object.values(categorySalesMap)
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || outlet === 'Outlet 1';
+
+    let salesByCategory = Object.values(categorySalesMap)
       .map(cat => {
         cat.profitMargin = cat.revenue > 0 ? ((cat.profit / cat.revenue) * 100) : 0;
         cat.percentOfRevenue = totalRevenue > 0 ? ((cat.revenue / totalRevenue) * 100) : 0;
@@ -294,11 +303,19 @@ const getMonthlyStatistics = async (req, res) => {
       })
       .sort((a, b) => b.revenue - a.revenue);
 
+    if (isStationaryScoped) {
+      salesByCategory = salesByCategory.filter(cat => /station/i.test(cat.categoryName));
+    }
+
     // Calculate profit margins
-    const allProductsArray = Object.values(productSalesMap).map(p => {
+    let allProductsArray = Object.values(productSalesMap).map(p => {
       p.profitMargin = p.revenueGenerated > 0 ? ((p.totalProfit / p.revenueGenerated) * 100) : 0;
       return p;
     });
+
+    if (isStationaryScoped) {
+      allProductsArray = allProductsArray.filter(p => /station/i.test(p.category));
+    }
 
     // 1. Most Selling Items (by quantity sold > 0)
     const mostSellingItems = [...allProductsArray]
@@ -453,7 +470,12 @@ const getSalesAnalytics = async (req, res) => {
 
 const getInventoryValuation = async (req, res) => {
   try {
-    const products = await Product.find({ isActive: true }).populate('category', 'name');
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || req.query.outlet === 'Outlet 1';
+    let products = await Product.find({ isActive: true }).populate('category', 'name');
+
+    if (isStationaryScoped) {
+      products = products.filter(p => /station/i.test(p.category?.name || ''));
+    }
 
     let totalStockUnits = 0;
     let totalValueAtCost = 0;

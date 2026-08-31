@@ -115,10 +115,10 @@ export default function Purchases() {
           <select
             value={outletFilter}
             onChange={e => setOutletFilter(e.target.value)}
-            className="form-input text-xs w-36"
+            className="form-input text-xs w-44 font-semibold"
           >
             <option value="All">All Outlets</option>
-            <option value="Outlet 1">Outlet 1</option>
+            <option value="Outlet 1">Stationary Outlet</option>
             <option value="Outlet 2">Outlet 2</option>
           </select>
           <button
@@ -180,7 +180,7 @@ export default function Purchases() {
                       </td>
                       <td>
                         <span className="badge-role bg-[#14324B]/10 text-[#14324B] font-semibold text-xs">
-                          🏪 {po.outlet || 'Outlet 1'}
+                          🏪 {po.outlet === 'Outlet 1' ? 'Stationary Outlet' : (po.outlet || 'Stationary Outlet')}
                         </span>
                       </td>
                       <td className="text-sm">
@@ -315,7 +315,32 @@ function PurchaseFormModal({ onClose, onSuccess }) {
     0
   );
 
+  const isOutlet1 = selectedOutlet === 'Outlet 1';
+
+  const handleOutletChange = (newOutlet) => {
+    setSelectedOutlet(newOutlet);
+    if (newOutlet === 'Outlet 1') {
+      // Remove any non-stationary items
+      const validStationary = restockItems.filter(item => {
+        const prod = allProducts.find(p => p._id === item.product);
+        return /station/i.test(prod?.category?.name || '');
+      });
+      if (validStationary.length < restockItems.length) {
+        setError(`Filtered out non-Stationary items. Stationary Outlet is restricted to Stationary products.`);
+      }
+      setRestockItems(validStationary);
+      setSelectedCat('ALL');
+    }
+  };
+
+  const visibleCategories = isOutlet1
+    ? categories.filter(c => /station/i.test(c.name))
+    : categories;
+
   const filteredCatalog = allProducts.filter((p) => {
+    if (isOutlet1 && !/station/i.test(p.category?.name || '')) {
+      return false;
+    }
     const catMatch =
       selectedCat === 'ALL' ||
       (p.category && (p.category._id === selectedCat || p.category === selectedCat));
@@ -390,10 +415,10 @@ function PurchaseFormModal({ onClose, onSuccess }) {
               <span className="text-xs font-bold text-[#14324B]">Outlet:</span>
               <select
                 value={selectedOutlet}
-                onChange={e => setSelectedOutlet(e.target.value)}
+                onChange={e => handleOutletChange(e.target.value)}
                 className="text-xs font-semibold bg-transparent border-0 focus:outline-none cursor-pointer"
               >
-                <option value="Outlet 1">Outlet 1</option>
+                <option value="Outlet 1">Stationary Outlet</option>
                 <option value="Outlet 2">Outlet 2</option>
               </select>
             </div>
@@ -443,7 +468,7 @@ function PurchaseFormModal({ onClose, onSuccess }) {
               >
                 All
               </button>
-              {categories.map((c) => (
+              {visibleCategories.map((c) => (
                 <button
                   key={c._id}
                   type="button"

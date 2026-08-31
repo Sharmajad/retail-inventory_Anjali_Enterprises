@@ -3,7 +3,12 @@ const Category = require('../models/Category');
 
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({ isActive: true }).sort('name');
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || req.query.outlet === 'Outlet 1';
+    const query = { isActive: true };
+    if (isStationaryScoped) {
+      query.name = { $regex: /station/i };
+    }
+    const categories = await Category.find(query).sort('name');
     res.status(200).json({ success: true, count: categories.length, categories });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

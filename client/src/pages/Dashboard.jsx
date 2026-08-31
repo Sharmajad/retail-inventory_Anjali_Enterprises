@@ -60,7 +60,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-[#14324B]/10 text-[#14324B] border border-[#14324B]/20 flex items-center gap-1">
               <Building2 className="w-3.5 h-3.5" />
-              <span>{selectedOutlet === 'All' ? 'Consolidated (All Outlets)' : selectedOutlet}</span>
+              <span>{selectedOutlet === 'All' ? 'Consolidated (All Outlets)' : (selectedOutlet === 'Outlet 1' ? 'Stationary Outlet (Stationary Only)' : selectedOutlet)}</span>
             </span>
           </div>
           <h1 className="text-3xl font-bold text-[#14324B] tracking-tight">Today's Overview</h1>
@@ -86,7 +86,7 @@ export default function Dashboard() {
                   selectedOutlet === 'Outlet 1' ? 'bg-[#14324B] text-white shadow-sm' : 'text-[#2B2926]/70 hover:text-[#14324B]'
                 }`}
               >
-                🏪 Outlet 1
+                🏪 Stationary Outlet
               </button>
               <button
                 onClick={() => setSelectedOutlet('Outlet 2')}
@@ -260,17 +260,18 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {['Outlet 1', 'Outlet 2'].map(outName => {
               const outData = summary.outletBreakdown[outName] || { revenue: 0, cost: 0, profit: 0, invoices: 0, cash: 0, online: 0 };
+              const displayName = outName === 'Outlet 1' ? 'Stationary Outlet' : 'Outlet 2';
               return (
                 <div key={outName} className="retail-card p-5 bg-white border border-[#E8E4DC] rounded-xl space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-[#E8E4DC]">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B] font-bold text-xs">
-                        {outName === 'Outlet 1' ? 'O1' : 'O2'}
+                        {outName === 'Outlet 1' ? 'ST' : 'O2'}
                       </div>
                       <div>
-                        <h3 className="font-bold text-sm text-[#14324B]">{outName}</h3>
+                        <h3 className="font-bold text-sm text-[#14324B]">{displayName}</h3>
                         <p className="text-[11px] text-[#2B2926]/50">
-                          {outName === 'Outlet 1' ? 'Staff: staff1@retail.com' : 'Staff: staff2@retail.com'}
+                          {outName === 'Outlet 1' ? 'Stationary Dept (staff1@retail.com)' : 'General Store (staff2@retail.com)'}
                         </p>
                       </div>
                     </div>

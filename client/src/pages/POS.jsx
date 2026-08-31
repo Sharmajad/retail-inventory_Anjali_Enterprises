@@ -229,46 +229,48 @@ export default function POS() {
             <ShoppingCart className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-[#14324B] tracking-tight">Point of Sale (POS)</h1>
-            <p className="text-xs text-[#2B2926]/60">Select items from catalog & process customer checkout</p>
-          </div>
+          <h1 className="text-xl font-bold text-[#14324B] tracking-tight">
+            Point of Sale (POS) {isOutlet1 && <span className="text-sm font-normal text-[#14324B]/70">&bull; Stationary Outlet</span>}
+          </h1>
+          <p className="text-xs text-[#2B2926]/60">Select items from catalog & process customer checkout</p>
         </div>
+      </div>
 
-        {/* Outlet Selector */}
-        <div className="flex items-center gap-3 self-start sm:self-auto">
-          {isOwner ? (
-            <div className="flex items-center gap-1.5 bg-[#FAF9F6] p-1 rounded-lg border border-[#E8E4DC]">
-              <span className="text-xs font-bold text-[#14324B] px-2">Active Outlet:</span>
-              <button
-                type="button"
-                onClick={() => handleOutletSwitch('Outlet 1')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
-                  selectedOutlet === 'Outlet 1'
-                    ? 'bg-[#14324B] text-white shadow-xs'
-                    : 'text-[#2B2926]/70 hover:text-[#14324B]'
-                }`}
-              >
-                🏪 Outlet 1 (Stationary)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleOutletSwitch('Outlet 2')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
-                  selectedOutlet === 'Outlet 2'
-                    ? 'bg-[#14324B] text-white shadow-xs'
-                    : 'text-[#2B2926]/70 hover:text-[#14324B]'
-                }`}
-              >
-                🏪 Outlet 2 (All Categories)
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 bg-[#14324B]/10 text-[#14324B] px-3.5 py-1.5 rounded-lg border border-[#14324B]/20 font-bold text-xs">
-              <Store className="w-4 h-4" />
-              <span>Counter: {selectedOutlet} {isOutlet1 ? '(Stationary Only)' : ''}</span>
-            </div>
-          )}
-        </div>
+      {/* Outlet Selector */}
+      <div className="flex items-center gap-3 self-start sm:self-auto">
+        {isOwner ? (
+          <div className="flex items-center gap-1.5 bg-[#FAF9F6] p-1 rounded-lg border border-[#E8E4DC]">
+            <span className="text-xs font-bold text-[#14324B] px-2">Active Outlet:</span>
+            <button
+              type="button"
+              onClick={() => handleOutletSwitch('Outlet 1')}
+              className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                selectedOutlet === 'Outlet 1'
+                  ? 'bg-[#14324B] text-white shadow-xs'
+                  : 'text-[#2B2926]/70 hover:text-[#14324B]'
+              }`}
+            >
+              🏪 Stationary Outlet
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOutletSwitch('Outlet 2')}
+              className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                selectedOutlet === 'Outlet 2'
+                  ? 'bg-[#14324B] text-white shadow-xs'
+                  : 'text-[#2B2926]/70 hover:text-[#14324B]'
+              }`}
+            >
+              🏪 Outlet 2
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 bg-[#14324B]/10 text-[#14324B] px-3.5 py-1.5 rounded-lg border border-[#14324B]/20 font-bold text-xs">
+            <Store className="w-4 h-4" />
+            <span>Counter: {isOutlet1 ? 'Stationary Outlet' : selectedOutlet}</span>
+          </div>
+        )}
+      </div>
       </div>
 
       {error && (

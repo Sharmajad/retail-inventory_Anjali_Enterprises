@@ -163,10 +163,10 @@ export default function Reports() {
                 <select
                   value={monthlyOutlet}
                   onChange={e => setMonthlyOutlet(e.target.value)}
-                  className="form-input text-xs w-36 font-semibold"
+                  className="form-input text-xs w-44 font-semibold"
                 >
                   <option value="All">All Outlets</option>
-                  <option value="Outlet 1">Outlet 1</option>
+                  <option value="Outlet 1">Stationary Outlet</option>
                   <option value="Outlet 2">Outlet 2</option>
                 </select>
               </div>
@@ -246,16 +246,17 @@ export default function Reports() {
                 <div className="retail-card p-5 bg-white border border-[#E8E4DC]">
                   <h3 className="font-bold text-[#14324B] text-sm mb-4 flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-[#14324B]" />
-                    <span>{monthlyStats.monthName} — Outlet 1 vs Outlet 2 Performance</span>
+                    <span>{monthlyStats.monthName} — Stationary Outlet vs Outlet 2 Performance</span>
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {['Outlet 1', 'Outlet 2'].map(outName => {
                       const outData = monthlyStats.outletComparison[outName] || { revenue: 0, profit: 0, invoices: 0, itemsSold: 0, cash: 0, online: 0, topItem: null };
+                      const displayName = outName === 'Outlet 1' ? 'Stationary Outlet' : 'Outlet 2';
                       return (
                         <div key={outName} className="p-4 rounded-lg bg-[#FAF9F6] border border-[#E8E4DC] space-y-3">
                           <div className="flex items-center justify-between pb-2 border-b border-[#E8E4DC]">
-                            <span className="font-bold text-sm text-[#14324B]">🏪 {outName}</span>
+                            <span className="font-bold text-sm text-[#14324B]">🏪 {displayName}</span>
                             <span className="text-xs font-mono font-bold bg-white px-2 py-0.5 rounded border border-[#E8E4DC]">
                               {outData.invoices} Sales
                             </span>
@@ -582,10 +583,10 @@ export default function Reports() {
               <select
                 value={salesOutlet}
                 onChange={e => setSalesOutlet(e.target.value)}
-                className="form-input text-xs w-36"
+                className="form-input text-xs w-44 font-semibold"
               >
                 <option value="All">All Outlets</option>
-                <option value="Outlet 1">Outlet 1</option>
+                <option value="Outlet 1">Stationary Outlet</option>
                 <option value="Outlet 2">Outlet 2</option>
               </select>
               <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="form-input text-xs w-36" />

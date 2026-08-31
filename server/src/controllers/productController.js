@@ -4,10 +4,15 @@ const Category = require('../models/Category');
 
 const getProducts = async (req, res) => {
   try {
-    const { category, search, lowStock, limit = 1000, page = 1 } = req.query;
+    const { category, search, lowStock, outlet, limit = 1000, page = 1 } = req.query;
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || outlet === 'Outlet 1';
     const query = { isActive: true };
 
-    if (category) {
+    if (isStationaryScoped) {
+      const stationaryCats = await Category.find({ name: { $regex: /station/i } });
+      const catIds = stationaryCats.map(c => c._id);
+      query.category = { $in: catIds };
+    } else if (category) {
       query.category = category;
     }
 
@@ -47,9 +52,13 @@ const getProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || req.query.outlet === 'Outlet 1';
     const product = await Product.findById(req.params.id).populate('category', 'name');
     if (!product || !product.isActive) {
       return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+    if (isStationaryScoped && !/station/i.test(product.category?.name || '')) {
+      return res.status(403).json({ success: false, message: 'Product is not in the Stationary Outlet catalog' });
     }
     res.status(200).json({ success: true, product });
   } catch (error) {
@@ -59,10 +68,14 @@ const getProductById = async (req, res) => {
 
 const getProductByBarcode = async (req, res) => {
   try {
+    const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || req.query.outlet === 'Outlet 1';
     const product = await Product.findOne({ barcode: req.params.barcode.trim(), isActive: true })
       .populate('category', 'name');
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product with this barcode not found' });
+    }
+    if (isStationaryScoped && !/station/i.test(product.category?.name || '')) {
+      return res.status(403).json({ success: false, message: 'Product is not in the Stationary Outlet catalog' });
     }
     res.status(200).json({ success: true, product });
   } catch (error) {

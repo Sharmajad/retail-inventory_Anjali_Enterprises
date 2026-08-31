@@ -77,7 +77,7 @@ export default function Users() {
                   <td className="text-[#2B2926]/70 text-sm font-mono">{u.email}</td>
                   <td>
                     <span className="badge-role bg-[#14324B]/10 text-[#14324B] font-semibold text-xs">
-                      🏪 {u.role === 'owner' ? 'All Outlets' : (u.outlet || 'Outlet 1')}
+                      🏪 {u.role === 'owner' ? 'All Outlets' : (u.outlet === 'Outlet 1' ? 'Stationary Outlet' : (u.outlet || 'Stationary Outlet'))}
                     </span>
                   </td>
                   <td>
@@ -210,7 +210,7 @@ function EditUserModal({ user, onClose, onSuccess }) {
                 onChange={e => setFormData({ ...formData, outlet: e.target.value })}
                 className="form-input text-xs"
               >
-                <option value="Outlet 1">Outlet 1 (Stationary)</option>
+                <option value="Outlet 1">Stationary Outlet</option>
                 <option value="Outlet 2">Outlet 2 (General Store)</option>
               </select>
             </div>
@@ -290,7 +290,7 @@ function UserFormModal({ onClose, onSuccess }) {
               onChange={e => setFormData({ ...formData, outlet: e.target.value })}
               className="form-input text-xs"
             >
-              <option value="Outlet 1">Outlet 1 (Stationary)</option>
+              <option value="Outlet 1">Stationary Outlet</option>
               <option value="Outlet 2">Outlet 2 (General Store)</option>
             </select>
           </div>

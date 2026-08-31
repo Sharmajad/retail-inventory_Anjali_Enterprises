@@ -84,8 +84,8 @@ export default function Login() {
               }`}
             >
               <ShoppingCart className="w-4 h-4" />
-              <span className="font-bold text-[11px]">Outlet 1</span>
-              <span className="text-[9px] opacity-75 truncate">Stationary</span>
+              <span className="font-bold text-[11px]">Stationary Outlet</span>
+              <span className="text-[9px] opacity-75 truncate">Stationary Only</span>
             </button>
 
             <button
@@ -124,8 +124,8 @@ export default function Login() {
             <div className="flex items-center gap-2">
               <KeyRound className="w-4 h-4 text-[#14324B]" />
               <h2 className="font-bold text-sm text-[#14324B]">
-                {selectedPortal === 'outlet1' && 'Outlet 1 Staff Authentication'}
-                {selectedPortal === 'outlet2' && 'Outlet 2 Staff Authentication'}
+                {selectedPortal === 'outlet1' && 'Stationary Outlet Staff Login'}
+                {selectedPortal === 'outlet2' && 'Outlet 2 Staff Login'}
                 {selectedPortal === 'owner' && 'Owner Security Login'}
                 {selectedPortal === 'custom' && 'Account Login'}
               </h2>
