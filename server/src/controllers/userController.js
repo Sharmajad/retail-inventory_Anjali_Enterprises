@@ -59,11 +59,14 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    const { name, phone, role, outlet, isActive } = req.body;
+    const { name, phone, role, outlet, password, isActive } = req.body;
     if (name) user.name = name;
     if (phone) user.phone = phone;
     if (role) user.role = role;
     if (outlet) user.outlet = outlet;
+    if (password && password.trim().length >= 6) {
+      user.password = password.trim();
+    }
     if (typeof isActive === 'boolean') user.isActive = isActive;
 
     await user.save();

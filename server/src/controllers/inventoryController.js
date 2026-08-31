@@ -8,7 +8,11 @@ const adjustStock = async (req, res) => {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { product: productId, adjustmentType, quantity, reason } = req.body;
+  const productId = req.body.product || req.body.productId;
+  const adjustmentType = req.body.adjustmentType || req.body.type;
+  const quantity = parseInt(req.body.quantity, 10);
+  const reason = (req.body.reason || '').trim();
+  const outlet = req.body.outlet || (req.user?.outlet && req.user.outlet !== 'All' ? req.user.outlet : 'Outlet 1');
 
   try {
     const product = await Product.findById(productId);
@@ -17,7 +21,7 @@ const adjustStock = async (req, res) => {
     }
 
     const previousStock = product.currentStock;
-    const qtyChange = adjustmentType === 'ADJUSTMENT_ADD' ? parseInt(quantity) : -parseInt(quantity);
+    const qtyChange = adjustmentType === 'ADJUSTMENT_ADD' ? quantity : -quantity;
     const newStock = previousStock + qtyChange;
 
     if (newStock < 0) {
@@ -36,6 +40,7 @@ const adjustStock = async (req, res) => {
       quantityChange: qtyChange,
       previousStock,
       newStock,
+      outlet,
       reason,
       performedBy: req.user._id
     });

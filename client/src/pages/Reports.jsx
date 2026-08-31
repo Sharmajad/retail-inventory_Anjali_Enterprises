@@ -19,7 +19,8 @@ import {
   Layers,
   ArrowUpRight,
   ArrowDownRight,
-  ShoppingBag
+  ShoppingBag,
+  Tags
 } from 'lucide-react';
 
 export default function Reports() {
@@ -276,6 +277,82 @@ export default function Reports() {
                         </div>
                       );
                     })}
+                  </div>
+                </div>
+              )}
+
+              {/* ── SALES BY CATEGORY BREAKDOWN ── */}
+              {monthlyStats.salesByCategory && monthlyStats.salesByCategory.length > 0 && (
+                <div className="retail-card overflow-hidden bg-white border border-[#E8E4DC]">
+                  <div className="p-4 border-b border-[#E8E4DC] bg-[#FAF9F6] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-md bg-[#14324B]/10 text-[#14324B] flex items-center justify-center font-bold">
+                        <Tags className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm text-[#14324B]">Monthly Sales & Profit by Category</h3>
+                        <p className="text-[11px] text-[#2B2926]/50">Performance, volume, and revenue contribution across material categories</p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-[#14324B] bg-white px-2.5 py-1 rounded border border-[#E8E4DC] self-start sm:self-auto">
+                      {monthlyStats.salesByCategory.length} Categories Analyzed
+                    </span>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Category</th>
+                          <th>Items Sold</th>
+                          <th>Invoices</th>
+                          <th>Revenue (₹)</th>
+                          <th>COGS (Cost)</th>
+                          <th>Net Profit (₹)</th>
+                          <th>Profit Margin</th>
+                          <th>Revenue Share</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {monthlyStats.salesByCategory.map((cat, idx) => (
+                          <tr key={cat.categoryName || idx}>
+                            <td>
+                              <div className="flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-md bg-[#14324B]/5 text-[#14324B] text-xs font-mono font-bold flex items-center justify-center">
+                                  {idx + 1}
+                                </span>
+                                <span className="font-bold text-[#2B2926] text-xs">{cat.categoryName}</span>
+                              </div>
+                            </td>
+                            <td className="font-mono font-bold text-xs">{cat.itemsSold} pcs</td>
+                            <td className="font-mono text-xs text-[#2B2926]/70">{cat.invoicesCount}</td>
+                            <td className="font-mono font-bold text-xs text-[#14324B]">₹{cat.revenue.toFixed(2)}</td>
+                            <td className="font-mono text-xs text-[#2B2926]/60">₹{cat.cost.toFixed(2)}</td>
+                            <td className="font-mono font-bold text-xs text-[#2F9E44]">₹{cat.profit.toFixed(2)}</td>
+                            <td>
+                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                                cat.profitMargin >= 30 ? 'bg-[#2F9E44]/10 text-[#2F9E44]' : cat.profitMargin > 0 ? 'bg-[#D98E04]/10 text-[#D98E04]' : 'bg-[#2B2926]/10 text-[#2B2926]/60'
+                              }`}>
+                                {cat.profitMargin.toFixed(1)}%
+                              </span>
+                            </td>
+                            <td>
+                              <div className="flex items-center gap-2 min-w-[120px]">
+                                <div className="flex-1 h-2 bg-[#FAF9F6] rounded-full overflow-hidden border border-[#E8E4DC]">
+                                  <div
+                                    className="h-full bg-[#14324B] rounded-full transition-all duration-500"
+                                    style={{ width: `${Math.min(100, Math.max(0, cat.percentOfRevenue))}%` }}
+                                  ></div>
+                                </div>
+                                <span className="font-mono text-[11px] font-bold text-[#2B2926]/70 w-10 text-right">
+                                  {cat.percentOfRevenue.toFixed(1)}%
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}

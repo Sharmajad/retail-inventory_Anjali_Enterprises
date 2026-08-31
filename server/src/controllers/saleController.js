@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const Sale = require('../models/Sale');
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 const StockTransaction = require('../models/StockTransaction');
 
 const generateInvoiceNumber = async () => {
@@ -20,6 +21,22 @@ const createSale = async (req, res) => {
 
   try {
     const assignedOutlet = outlet || req.user.outlet || 'Outlet 1';
+
+    // Enforce Outlet 1 Stationary category restriction
+    if (assignedOutlet === 'Outlet 1') {
+      const productIds = items.map(i => i.product);
+      const fetchedProducts = await Product.find({ _id: { $in: productIds } }).populate('category', 'name');
+      for (const prod of fetchedProducts) {
+        const catName = prod.category?.name || '';
+        if (!/station/i.test(catName)) {
+          return res.status(400).json({
+            success: false,
+            message: `Outlet 1 only sells Stationary items. '${prod.name}' is in category '${catName || 'General'}'.`
+          });
+        }
+      }
+    }
+
     const saleItems = [];
     let subtotalAmount = 0;
     const stockTransactionsToCreate = [];

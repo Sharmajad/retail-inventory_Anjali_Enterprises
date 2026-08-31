@@ -67,8 +67,48 @@ export default function POS() {
     fetchProducts();
   }, []);
 
+  const isStationaryCategory = (cat) => {
+    if (!cat) return false;
+    const name = typeof cat === 'object' ? (cat.name || '') : String(cat);
+    return /station/i.test(name);
+  };
+
+  const isProductStationary = (product) => {
+    if (!product) return false;
+    const catName = product.category?.name || categories.find(c => c._id === product.category)?.name || '';
+    return /station/i.test(catName);
+  };
+
+  const handleOutletSwitch = (newOutlet) => {
+    setSelectedOutlet(newOutlet);
+    if (newOutlet === 'Outlet 1') {
+      // Find non-stationary items in cart
+      const nonStationary = cart.filter(item => !isProductStationary(item.product));
+      if (nonStationary.length > 0) {
+        setCart(prev => prev.filter(item => isProductStationary(item.product)));
+        setError(`Removed ${nonStationary.length} item(s) from cart. Outlet 1 is restricted to Stationary items only.`);
+        setTimeout(() => setError(''), 4000);
+      }
+      // If selected category is non-stationary, reset to ALL
+      if (selectedCategory !== 'ALL') {
+        const currentCat = categories.find(c => c._id === selectedCategory);
+        if (currentCat && !isStationaryCategory(currentCat)) {
+          setSelectedCategory('ALL');
+        }
+      }
+    }
+  };
+
   // Filtered product list
+  const isOutlet1 = selectedOutlet === 'Outlet 1';
+  const availableCategories = isOutlet1 ? categories.filter(isStationaryCategory) : categories;
+
   const visibleProducts = products.filter(p => {
+    // If Outlet 1, product MUST be Stationary
+    if (isOutlet1 && !isProductStationary(p)) {
+      return false;
+    }
+
     const catMatch =
       selectedCategory === 'ALL' ||
       (p.category && (p.category._id === selectedCategory || p.category === selectedCategory));
@@ -81,6 +121,11 @@ export default function POS() {
 
   const addToCart = (product) => {
     setError('');
+    if (isOutlet1 && !isProductStationary(product)) {
+      setError(`Cannot add "${product.name}". Outlet 1 only sells Stationary products.`);
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
     if (product.currentStock <= 0) {
       setError(`${product.name} is out of stock!`);
       setTimeout(() => setError(''), 3000);
@@ -196,31 +241,31 @@ export default function POS() {
               <span className="text-xs font-bold text-[#14324B] px-2">Active Outlet:</span>
               <button
                 type="button"
-                onClick={() => setSelectedOutlet('Outlet 1')}
+                onClick={() => handleOutletSwitch('Outlet 1')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
                   selectedOutlet === 'Outlet 1'
                     ? 'bg-[#14324B] text-white shadow-xs'
                     : 'text-[#2B2926]/70 hover:text-[#14324B]'
                 }`}
               >
-                🏪 Outlet 1
+                🏪 Outlet 1 (Stationary)
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedOutlet('Outlet 2')}
+                onClick={() => handleOutletSwitch('Outlet 2')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
                   selectedOutlet === 'Outlet 2'
                     ? 'bg-[#14324B] text-white shadow-xs'
                     : 'text-[#2B2926]/70 hover:text-[#14324B]'
                 }`}
               >
-                🏪 Outlet 2
+                🏪 Outlet 2 (All Categories)
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-2 bg-[#14324B]/10 text-[#14324B] px-3.5 py-1.5 rounded-lg border border-[#14324B]/20 font-bold text-xs">
               <Store className="w-4 h-4" />
-              <span>Counter: {selectedOutlet}</span>
+              <span>Counter: {selectedOutlet} {isOutlet1 ? '(Stationary Only)' : ''}</span>
             </div>
           )}
         </div>
@@ -482,6 +527,12 @@ export default function POS() {
 
           {/* Category Quick Filter */}
           <div className="retail-card p-2.5 bg-white border border-[#E8E4DC]">
+            {isOutlet1 && (
+              <div className="mb-2 px-2 py-1 rounded bg-[#E8A33D]/10 border border-[#E8A33D]/30 text-[#E8A33D] text-[11px] font-bold flex items-center gap-1.5">
+                <span>✏️</span>
+                <span>Outlet 1 sells Stationary items exclusively</span>
+              </div>
+            )}
             <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
               <button
                 type="button"
@@ -492,9 +543,9 @@ export default function POS() {
                     : 'bg-[#FAF9F6] text-[#2B2926]/70 border border-[#E8E4DC] hover:border-[#14324B]'
                 }`}
               >
-                All
+                All {isOutlet1 ? 'Stationary' : ''}
               </button>
-              {categories.map(cat => (
+              {availableCategories.map(cat => (
                 <button
                   key={cat._id}
                   type="button"
@@ -515,7 +566,7 @@ export default function POS() {
           <div className="retail-card overflow-hidden bg-white border border-[#E8E4DC] flex-1 flex flex-col min-h-[400px]">
             <div className="p-3 border-b border-[#E8E4DC] bg-[#FAF9F6] flex items-center justify-between">
               <span className="font-bold text-xs text-[#14324B]">
-                {selectedCategory === 'ALL' ? 'All Catalog Products' : categories.find(c => c._id === selectedCategory)?.name || 'Products'}
+                {selectedCategory === 'ALL' ? (isOutlet1 ? 'Stationary Products (Outlet 1)' : 'All Catalog Products') : availableCategories.find(c => c._id === selectedCategory)?.name || 'Products'}
               </span>
               <span className="text-[11px] font-mono text-[#2B2926]/50">{visibleProducts.length} items available</span>
             </div>

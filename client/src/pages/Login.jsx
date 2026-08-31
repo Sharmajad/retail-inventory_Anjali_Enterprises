@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Store, Lock, Mail, ArrowRight, ShieldCheck, ShoppingCart, KeyRound, AlertCircle } from 'lucide-react';
+import { Store, Lock, Mail, ArrowRight, ShieldCheck, ShoppingCart, KeyRound, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
-  const [email, setEmail] = useState('owner@retail.com');
+  const [selectedPortal, setSelectedPortal] = useState('outlet1'); // 'outlet1' | 'outlet2' | 'owner' | 'custom'
+  const [email, setEmail] = useState('staff1@retail.com');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [loadingOwner, setLoadingOwner] = useState(false);
-  const [loadingStaff, setLoadingStaff] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // 1-Click Instant Login for Counter Staff (Outlet 1 or Outlet 2)
-  const handleStaffDirectLogin = async (staffEmail, staffPassword, outletName) => {
+  const handlePortalSelect = (portal) => {
+    setSelectedPortal(portal);
     setError('');
-    setLoadingStaff(staffEmail);
-    const res = await login(staffEmail, staffPassword);
-    setLoadingStaff(null);
-    if (res.success) {
-      navigate('/pos');
-    } else {
-      setError(res.message || `Failed to start ${outletName} session.`);
+    setPassword('');
+    if (portal === 'outlet1') {
+      setEmail('staff1@retail.com');
+    } else if (portal === 'outlet2') {
+      setEmail('staff2@retail.com');
+    } else if (portal === 'owner') {
+      setEmail('owner@retail.com');
     }
   };
 
-  // Owner Login (Requires Password)
-  const handleOwnerSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    if (!password) {
+      setError('Please enter password.');
+      return;
+    }
     setError('');
-    setLoadingOwner(true);
+    setLoading(true);
 
     const res = await login(email, password);
-    setLoadingOwner(false);
+    setLoading(false);
     if (res.success) {
       if (res.user?.role === 'staff') {
         navigate('/pos');
@@ -41,7 +45,7 @@ export default function Login() {
         navigate('/dashboard');
       }
     } else {
-      setError(res.message || 'Incorrect Owner password. Please try again.');
+      setError(res.message || 'Incorrect credentials. Please check your password and try again.');
     }
   };
 
@@ -66,86 +70,85 @@ export default function Login() {
           </div>
         )}
 
-        {/* 1. Dual Counter Staff Direct Access (NO PASSWORD REQUIRED) */}
-        <div className="retail-card p-5 bg-white border-2 border-[#2F9E44]/30 shadow-md hover:border-[#2F9E44] transition-all rounded-xl space-y-3">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-lg bg-[#2F9E44]/10 flex items-center justify-center text-[#2F9E44]">
-                <ShoppingCart className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="font-bold text-sm text-[#14324B]">Counter Staff Access</h2>
-                <span className="inline-block text-[10px] font-bold text-[#2F9E44] bg-[#2F9E44]/10 px-2 py-0.5 rounded mt-0.5">
-                  ✓ Instant Launch (2 Outlets)
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <p className="text-xs text-[#2B2926]/60">
-            Open counter till directly for billing, barcode scanning, and invoice printing.
-          </p>
-
-          <div className="grid grid-cols-2 gap-2.5 pt-1">
+        {/* Portal / Outlet Selection Tabs */}
+        <div className="retail-card p-4 bg-white border border-[#E8E4DC] shadow-sm rounded-xl">
+          <div className="text-xs font-bold text-[#14324B] mb-2.5">Select Login Outlet / Role:</div>
+          <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
-              onClick={() => handleStaffDirectLogin('staff1@retail.com', 'Staff@12345', 'Outlet 1')}
-              disabled={loadingStaff || loadingOwner}
-              className="py-2.5 px-3 rounded-lg bg-[#2F9E44] hover:bg-[#2F9E44]/90 text-white font-semibold text-xs flex flex-col items-center justify-center gap-1 transition-all cursor-pointer shadow-sm text-center"
+              onClick={() => handlePortalSelect('outlet1')}
+              className={`p-2.5 rounded-lg border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                selectedPortal === 'outlet1'
+                  ? 'bg-[#14324B] text-white border-[#14324B] shadow-sm'
+                  : 'bg-[#FAF9F6] text-[#2B2926]/80 border-[#E8E4DC] hover:border-[#14324B]'
+              }`}
             >
-              {loadingStaff === 'staff1@retail.com' ? (
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-              ) : (
-                <>
-                  <span className="font-bold text-xs flex items-center gap-1">🏪 Outlet 1 <ArrowRight className="w-3.5 h-3.5" /></span>
-                  <span className="text-[10px] opacity-80">Counter Staff 1</span>
-                </>
-              )}
+              <ShoppingCart className="w-4 h-4" />
+              <span className="font-bold text-[11px]">Outlet 1</span>
+              <span className="text-[9px] opacity-75 truncate">Stationary</span>
             </button>
 
             <button
               type="button"
-              onClick={() => handleStaffDirectLogin('staff2@retail.com', 'Staff@12345', 'Outlet 2')}
-              disabled={loadingStaff || loadingOwner}
-              className="py-2.5 px-3 rounded-lg bg-[#14324B] hover:bg-[#14324B]/90 text-white font-semibold text-xs flex flex-col items-center justify-center gap-1 transition-all cursor-pointer shadow-sm text-center"
+              onClick={() => handlePortalSelect('outlet2')}
+              className={`p-2.5 rounded-lg border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                selectedPortal === 'outlet2'
+                  ? 'bg-[#14324B] text-white border-[#14324B] shadow-sm'
+                  : 'bg-[#FAF9F6] text-[#2B2926]/80 border-[#E8E4DC] hover:border-[#14324B]'
+              }`}
             >
-              {loadingStaff === 'staff2@retail.com' ? (
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-              ) : (
-                <>
-                  <span className="font-bold text-xs flex items-center gap-1">🏪 Outlet 2 <ArrowRight className="w-3.5 h-3.5" /></span>
-                  <span className="text-[10px] opacity-80">Counter Staff 2</span>
-                </>
-              )}
+              <ShoppingCart className="w-4 h-4" />
+              <span className="font-bold text-[11px]">Outlet 2</span>
+              <span className="text-[9px] opacity-75 truncate">General Store</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handlePortalSelect('owner')}
+              className={`p-2.5 rounded-lg border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                selectedPortal === 'owner'
+                  ? 'bg-[#14324B] text-white border-[#14324B] shadow-sm'
+                  : 'bg-[#FAF9F6] text-[#2B2926]/80 border-[#E8E4DC] hover:border-[#14324B]'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span className="font-bold text-[11px]">Owner</span>
+              <span className="text-[9px] opacity-75 truncate">Full Access</span>
             </button>
           </div>
         </div>
 
-        {/* 2. Store Owner Login (PASSWORD REQUIRED) */}
-        <div className="retail-card p-5 bg-white shadow-md rounded-xl">
-          <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-[#E8E4DC]">
-            <div className="w-9 h-9 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B]">
-              <ShieldCheck className="w-5 h-5" />
+        {/* Login Password Form */}
+        <div className="retail-card p-5 bg-white shadow-md rounded-xl border border-[#E8E4DC]">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E8E4DC] mb-4">
+            <div className="flex items-center gap-2">
+              <KeyRound className="w-4 h-4 text-[#14324B]" />
+              <h2 className="font-bold text-sm text-[#14324B]">
+                {selectedPortal === 'outlet1' && 'Outlet 1 Staff Authentication'}
+                {selectedPortal === 'outlet2' && 'Outlet 2 Staff Authentication'}
+                {selectedPortal === 'owner' && 'Owner Security Login'}
+                {selectedPortal === 'custom' && 'Account Login'}
+              </h2>
             </div>
-            <div>
-              <h2 className="font-bold text-sm text-[#14324B]">Store Owner Access</h2>
-              <span className="inline-block text-[10px] font-semibold text-[#14324B] bg-[#14324B]/5 px-2 py-0.5 rounded mt-0.5">
-                🔒 Password Required (Full Access)
-              </span>
-            </div>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#14324B]/5 text-[#14324B]">
+              🔒 Password Protected
+            </span>
           </div>
 
-          <form onSubmit={handleOwnerSubmit} className="space-y-3.5">
+          <form onSubmit={handleLoginSubmit} className="space-y-3.5">
             <div>
-              <label className="form-label text-xs">Owner Email</label>
+              <label className="form-label text-xs">Email Address</label>
               <div className="relative">
                 <input
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setSelectedPortal('custom');
+                  }}
                   className="form-input pl-9 text-xs font-medium"
-                  placeholder="owner@retail.com"
+                  placeholder="Enter email..."
                 />
                 <Mail className="w-4 h-4 text-[#2B2926]/40 absolute left-3 top-3" />
               </div>
@@ -153,32 +156,42 @@ export default function Login() {
 
             <div>
               <label className="form-label text-xs flex items-center justify-between">
-                <span>Owner Password</span>
+                <span>Enter Password</span>
+                <span className="text-[10px] text-[#2B2926]/50">Required</span>
               </label>
               <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="form-input pl-9 text-xs font-mono"
-                  placeholder="Enter Owner Password..."
+                  className="form-input pl-9 pr-10 text-xs font-mono"
+                  placeholder="Enter password..."
+                  autoFocus
                 />
                 <Lock className="w-4 h-4 text-[#2B2926]/40 absolute left-3 top-3" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-[#2B2926]/40 hover:text-[#14324B]"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loadingOwner || loadingStaff}
-              className="w-full btn-primary text-xs py-2.5 flex items-center justify-center gap-2 cursor-pointer mt-1"
+              disabled={loading}
+              className="w-full btn-primary text-xs py-3 flex items-center justify-center gap-2 cursor-pointer mt-2"
             >
-              {loadingOwner ? (
+              {loading ? (
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
               ) : (
                 <>
-                  <KeyRound className="w-4 h-4" />
-                  <span>Unlock Owner Dashboard</span>
+                  <span>Sign In to {selectedPortal === 'owner' ? 'Dashboard' : 'Counter POS'}</span>
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
@@ -189,3 +202,4 @@ export default function Login() {
     </div>
   );
 }
+

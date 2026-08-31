@@ -12,17 +12,21 @@ export default function StockAdjustModal({ product, onClose, onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setError('');
     try {
+      const adjType = type === 'add' ? 'ADJUSTMENT_ADD' : 'ADJUSTMENT_SUBTRACT';
       await api.post('/inventory/adjust', {
+        product: product._id,
         productId: product._id,
-        type: type === 'add' ? 'ADJUSTMENT_ADD' : 'ADJUSTMENT_SUBTRACT',
+        adjustmentType: adjType,
+        type: adjType,
         quantity: Number(quantity),
-        reason
+        reason: reason.trim()
       });
       onSuccess();
       onClose();
     } catch (err) {
-      setError(err.response?.data?.message || 'Adjustment failed.');
+      setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Adjustment failed.');
     } finally {
       setSubmitting(false);
     }

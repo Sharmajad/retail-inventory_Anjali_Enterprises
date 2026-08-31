@@ -1,5 +1,6 @@
 const Sale = require('../models/Sale');
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 const Supplier = require('../models/Supplier');
 const { getISTTodayRange, getISTMonthRange } = require('../utils/dateUtils');
 
@@ -132,6 +133,7 @@ const getMonthlyStatistics = async (req, res) => {
 
     const sales = await Sale.find(query).sort('-createdAt');
     const allActiveProducts = await Product.find({ isActive: true }).populate('category', 'name');
+    const allCategories = await Category.find({ isActive: true });
 
     let totalRevenue = 0;
     let totalCost = 0;
@@ -146,18 +148,35 @@ const getMonthlyStatistics = async (req, res) => {
     let cardRevenue = 0;
 
     const productSalesMap = {};
+    const categorySalesMap = {};
     const outletStats = {
       'Outlet 1': { revenue: 0, cost: 0, profit: 0, invoices: 0, itemsSold: 0, cash: 0, online: 0, topItem: null, itemSales: {} },
       'Outlet 2': { revenue: 0, cost: 0, profit: 0, invoices: 0, itemsSold: 0, cash: 0, online: 0, topItem: null, itemSales: {} }
     };
 
+    // Initialize all active categories in map
+    allCategories.forEach(cat => {
+      categorySalesMap[cat.name] = {
+        categoryId: cat._id,
+        categoryName: cat.name,
+        itemsSold: 0,
+        revenue: 0,
+        cost: 0,
+        profit: 0,
+        profitMargin: 0,
+        percentOfRevenue: 0,
+        invoicesCount: 0
+      };
+    });
+
     // Initialize all active products in map with 0 sales
     allActiveProducts.forEach(p => {
+      const catName = p.category?.name || 'General';
       productSalesMap[p._id.toString()] = {
         productId: p._id,
         name: p.name,
         brand: p.brand || '',
-        category: p.category?.name || 'General',
+        category: catName,
         sellingPrice: p.sellingPrice,
         costPrice: p.costPrice,
         currentStock: p.currentStock,
@@ -192,6 +211,8 @@ const getMonthlyStatistics = async (req, res) => {
         if (outletStats[saleOutlet]) outletStats[saleOutlet].online += sale.grandTotal;
       }
 
+      const categoriesInThisSale = new Set();
+
       sale.items.forEach(item => {
         const qty = item.quantity || 0;
         const subtotal = item.subtotal || (item.unitPrice * qty);
@@ -211,6 +232,8 @@ const getMonthlyStatistics = async (req, res) => {
         }
 
         const prodId = item.product ? item.product.toString() : item.productName;
+        let itemCatName = 'General';
+
         if (!productSalesMap[prodId]) {
           productSalesMap[prodId] = {
             productId: item.product,
@@ -226,14 +249,50 @@ const getMonthlyStatistics = async (req, res) => {
             totalProfit: 0,
             profitMargin: 0
           };
+        } else {
+          itemCatName = productSalesMap[prodId].category || 'General';
         }
 
         productSalesMap[prodId].quantitySold += qty;
         productSalesMap[prodId].revenueGenerated += subtotal;
         productSalesMap[prodId].totalCost += cost;
         productSalesMap[prodId].totalProfit += profit;
+
+        // Aggregate by Category
+        if (!categorySalesMap[itemCatName]) {
+          categorySalesMap[itemCatName] = {
+            categoryName: itemCatName,
+            itemsSold: 0,
+            revenue: 0,
+            cost: 0,
+            profit: 0,
+            profitMargin: 0,
+            percentOfRevenue: 0,
+            invoicesCount: 0
+          };
+        }
+        categorySalesMap[itemCatName].itemsSold += qty;
+        categorySalesMap[itemCatName].revenue += subtotal;
+        categorySalesMap[itemCatName].cost += cost;
+        categorySalesMap[itemCatName].profit += profit;
+        categoriesInThisSale.add(itemCatName);
+      });
+
+      categoriesInThisSale.forEach(cName => {
+        if (categorySalesMap[cName]) {
+          categorySalesMap[cName].invoicesCount += 1;
+        }
       });
     });
+
+    // Calculate category summary and margins
+    const salesByCategory = Object.values(categorySalesMap)
+      .map(cat => {
+        cat.profitMargin = cat.revenue > 0 ? ((cat.profit / cat.revenue) * 100) : 0;
+        cat.percentOfRevenue = totalRevenue > 0 ? ((cat.revenue / totalRevenue) * 100) : 0;
+        return cat;
+      })
+      .sort((a, b) => b.revenue - a.revenue);
 
     // Calculate profit margins
     const allProductsArray = Object.values(productSalesMap).map(p => {
@@ -300,6 +359,7 @@ const getMonthlyStatistics = async (req, res) => {
           cardRevenue
         }
       },
+      salesByCategory,
       mostSellingItems,
       leastSellingItems,
       highestProfitItems,
