@@ -164,11 +164,30 @@ export default function Products() {
                   <tr key={p._id}>
                     <td>
                       <div className="font-bold text-[#2B2926]">{p.name}</div>
-                      <div className="text-xs text-[#2B2926]/50">{p.brand || 'No Brand'}</div>
+                      <div className="text-xs text-[#2B2926]/50 flex items-center gap-2">
+                        <span>{p.brand || 'No Brand'}</span>
+                        {p.subCategory && (
+                          <span className="px-1.5 py-0.5 rounded bg-[#14324B]/5 text-[#14324B] text-[10px] font-medium border border-[#14324B]/10">
+                            {p.subCategory}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="text-[#2B2926]/70 text-sm">{p.category?.name || '-'}</td>
-                    {isOwner && <td className="font-mono text-[#2B2926]/50">₹{p.costPrice.toFixed(2)}</td>}
-                    <td className="font-mono font-bold text-[#14324B]">₹{p.sellingPrice.toFixed(2)}</td>
+                    {isOwner && (
+                      <td className="font-mono text-[#2B2926]/70 text-xs">
+                        {p.costPrice != null ? `₹${Number(p.costPrice).toFixed(2)}` : <span className="text-[#2B2926]/40 italic">Not set</span>}
+                      </td>
+                    )}
+                    <td className="font-mono font-bold text-[#14324B]">
+                      {p.sellingPrice != null ? (
+                        `₹${Number(p.sellingPrice).toFixed(2)}`
+                      ) : (
+                        <span className="px-2 py-0.5 rounded bg-[#D98E04]/10 text-[#D98E04] text-[11px] font-semibold">
+                          Unpriced
+                        </span>
+                      )}
+                    </td>
                     <td className="font-mono font-bold">{p.currentStock}</td>
                     <td>
                       {!p.isActive ? (

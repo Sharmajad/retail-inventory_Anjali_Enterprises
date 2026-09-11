@@ -5,11 +5,12 @@ import { X, Trash2 } from 'lucide-react';
 export default function ProductModal({ product, categories, onClose, onSuccess, onDeleteRequest }) {
   const [formData, setFormData] = useState({
     name: product?.name || '',
-    category: product?.category?._id || '',
+    category: product?.category?._id || product?.category || '',
+    subCategory: product?.subCategory || '',
     brand: product?.brand || '',
-    costPrice: product?.costPrice || '',
-    sellingPrice: product?.sellingPrice || '',
-    currentStock: product?.currentStock || '',
+    costPrice: product?.costPrice !== undefined && product?.costPrice !== null ? product.costPrice : '',
+    sellingPrice: product?.sellingPrice !== undefined && product?.sellingPrice !== null ? product.sellingPrice : '',
+    currentStock: product?.currentStock !== undefined ? product.currentStock : '',
     lowStockThreshold: product?.lowStockThreshold || 5,
     isActive: product?.isActive !== undefined ? product.isActive : true
   });
@@ -50,35 +51,43 @@ export default function ProductModal({ product, categories, onClose, onSuccess, 
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="form-label">Category</label>
-              <select value={formData.category} onChange={e=>setFormData({...formData, category: e.target.value})} className="form-input">
+              <label className="form-label">Category *</label>
+              <select required value={formData.category} onChange={e=>setFormData({...formData, category: e.target.value})} className="form-input">
                 <option value="">Select category</option>
                 {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
               </select>
             </div>
             <div>
+              <label className="form-label">Sub-Category</label>
+              <input type="text" placeholder="e.g. Earings, Glass Bangals" value={formData.subCategory} onChange={e=>setFormData({...formData, subCategory: e.target.value})} className="form-input" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
               <label className="form-label">Brand</label>
               <input type="text" value={formData.brand} onChange={e=>setFormData({...formData, brand: e.target.value})} className="form-input" />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="form-label">Cost Price (₹) *</label>
-              <input type="number" step="0.01" min="0" required value={formData.costPrice} onChange={e=>setFormData({...formData, costPrice: e.target.value})} className="form-input font-mono" />
-            </div>
-            <div>
-              <label className="form-label">Selling Price (₹) *</label>
-              <input type="number" step="0.01" min="0" required value={formData.sellingPrice} onChange={e=>setFormData({...formData, sellingPrice: e.target.value})} className="form-input font-mono" />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="form-label">Opening Stock</label>
-              <input type="number" min="0" value={formData.currentStock} onChange={e=>setFormData({...formData, currentStock: e.target.value})} className="form-input font-mono" />
             </div>
             <div>
               <label className="form-label">Low Stock Alert</label>
               <input type="number" min="0" value={formData.lowStockThreshold} onChange={e=>setFormData({...formData, lowStockThreshold: e.target.value})} className="form-input font-mono" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="form-label">Cost Price (₹)</label>
+              <input type="number" step="0.01" min="0" placeholder="Optional" value={formData.costPrice} onChange={e=>setFormData({...formData, costPrice: e.target.value})} className="form-input font-mono" />
+            </div>
+            <div>
+              <label className="form-label">Selling Price (₹)</label>
+              <input type="number" step="0.01" min="0" placeholder="Optional (Required for POS sale)" value={formData.sellingPrice} onChange={e=>setFormData({...formData, sellingPrice: e.target.value})} className="form-input font-mono" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="form-label">Opening Stock</label>
+              <input type="number" min="0" value={formData.currentStock} onChange={e=>setFormData({...formData, currentStock: e.target.value})} className="form-input font-mono" />
             </div>
           </div>
           <div className="flex items-center gap-3 pt-1">

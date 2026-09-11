@@ -126,6 +126,11 @@ export default function POS() {
       setTimeout(() => setError(''), 3000);
       return;
     }
+    if (product.sellingPrice == null || product.sellingPrice <= 0) {
+      setError(`Selling price not set for "${product.name}" — set price in Inventory before selling.`);
+      setTimeout(() => setError(''), 4000);
+      return;
+    }
     if (product.currentStock <= 0) {
       setError(`${product.name} is out of stock!`);
       setTimeout(() => setError(''), 3000);
@@ -141,11 +146,11 @@ export default function POS() {
         }
         return prev.map(i =>
           i.product._id === product._id
-            ? { ...i, quantity: i.quantity + 1, subtotal: (i.quantity + 1) * i.product.sellingPrice }
+            ? { ...i, quantity: i.quantity + 1, subtotal: (i.quantity + 1) * (i.product.sellingPrice || 0) }
             : i
         );
       }
-      return [...prev, { product, quantity: 1, subtotal: product.sellingPrice }];
+      return [...prev, { product, quantity: 1, subtotal: product.sellingPrice || 0 }];
     });
   };
 
@@ -613,7 +618,13 @@ export default function POS() {
 
                         <div className="flex items-center justify-between pt-2 mt-2 border-t border-[#E8E4DC]/60">
                           <span className="font-bold font-mono text-sm text-[#14324B]">
-                            ₹{product.sellingPrice.toFixed(2)}
+                            {product.sellingPrice != null ? (
+                              `₹${Number(product.sellingPrice).toFixed(2)}`
+                            ) : (
+                              <span className="text-[#D98E04] bg-[#D98E04]/10 px-1.5 py-0.5 rounded text-[10px] font-semibold">
+                                Unpriced
+                              </span>
+                            )}
                           </span>
                           <span className="text-[10px] text-[#2B2926]/60 font-mono">
                             Stock: <strong>{product.currentStock}</strong>

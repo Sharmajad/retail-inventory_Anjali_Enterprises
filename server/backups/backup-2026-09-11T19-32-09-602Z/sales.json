@@ -1,0 +1,830 @@
+[
+  {
+    "_id": "6a7deba106015a90c98926ae",
+    "invoiceNumber": "INV-20260813-6043",
+    "items": [
+      {
+        "product": "6a7deb1b1aa0d09aafd5602f",
+        "productName": "Matte Velvet Lipstick (Red)",
+        "quantity": 2,
+        "unitPrice": 299,
+        "costPrice": 150,
+        "subtotal": 598,
+        "_id": "6a7deba106015a90c98926af"
+      },
+      {
+        "product": "6a7deb1c1aa0d09aafd5603d",
+        "productName": "Designer Hair Clip Set",
+        "quantity": 3,
+        "unitPrice": 99,
+        "costPrice": 40,
+        "subtotal": 297,
+        "_id": "6a7deba106015a90c98926b0"
+      }
+    ],
+    "subtotalAmount": 895,
+    "discountAmount": 45,
+    "taxAmount": 0,
+    "grandTotal": 850,
+    "paymentMethod": "cash",
+    "receivedAmount": 1000,
+    "changeAmount": 150,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "customerName": "Anita Sharma",
+    "customerPhone": "9898989898",
+    "createdAt": "2026-08-13T16:06:57.792Z",
+    "updatedAt": "2026-08-13T16:06:57.792Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a86962eb0213f65418949ca",
+    "invoiceNumber": "INV-20260820-4113",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 4,
+        "_id": "6a86962eb0213f65418949cb"
+      }
+    ],
+    "subtotalAmount": 4,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 4,
+    "paymentMethod": "cash",
+    "receivedAmount": 4,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-20T05:52:46.891Z",
+    "updatedAt": "2026-08-20T05:52:46.891Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a86964cb0213f65418949d7",
+    "invoiceNumber": "INV-20260820-1549",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 4,
+        "_id": "6a86964cb0213f65418949d8"
+      },
+      {
+        "product": "6a868e43aa81a6610e04f871",
+        "productName": "06. register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 4,
+        "_id": "6a86964cb0213f65418949d9"
+      }
+    ],
+    "subtotalAmount": 8,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 8,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 2,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-20T05:53:16.941Z",
+    "updatedAt": "2026-08-20T05:53:16.941Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a86969db0213f6541894a5a",
+    "invoiceNumber": "INV-20260820-8645",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f7f9",
+        "productName": "05/- Pen",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 4,
+        "_id": "6a86969db0213f6541894a5b"
+      }
+    ],
+    "subtotalAmount": 4,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 4,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 6,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-20T05:54:37.320Z",
+    "updatedAt": "2026-08-20T05:54:37.320Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a869790b0213f6541894a8a",
+    "invoiceNumber": "INV-20260820-1071",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 4,
+        "_id": "6a869790b0213f6541894a8b"
+      }
+    ],
+    "subtotalAmount": 4,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 4,
+    "paymentMethod": "cash",
+    "receivedAmount": 45,
+    "changeAmount": 41,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-20T05:58:40.788Z",
+    "updatedAt": "2026-08-20T05:58:40.788Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a869cf5115fa2d4d82e0d51",
+    "invoiceNumber": "INV-20260820-6188",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f943",
+        "productName": "ALTA",
+        "quantity": 1,
+        "unitPrice": 3,
+        "costPrice": 2,
+        "subtotal": 3,
+        "_id": "6a869cf5115fa2d4d82e0d52"
+      }
+    ],
+    "subtotalAmount": 3,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 3,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 7,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-20T06:21:41.722Z",
+    "updatedAt": "2026-08-20T06:21:41.722Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8967c7ec0add83a6c5f45c",
+    "invoiceNumber": "INV-20260822-8680",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f943",
+        "productName": "ALTA",
+        "quantity": 3,
+        "unitPrice": 30,
+        "costPrice": 20,
+        "subtotal": 90,
+        "_id": "6a8967c7ec0add83a6c5f45d"
+      }
+    ],
+    "subtotalAmount": 90,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 90,
+    "paymentMethod": "cash",
+    "receivedAmount": 200,
+    "changeAmount": 110,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-22T09:11:35.795Z",
+    "updatedAt": "2026-08-22T09:11:35.795Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8968d6ec0add83a6c5f4fa",
+    "invoiceNumber": "INV-20260822-8167",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f80e",
+        "productName": "Pencil",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 8,
+        "_id": "6a8968d6ec0add83a6c5f4fb"
+      },
+      {
+        "product": "6a868e43aa81a6610e04f95e",
+        "productName": "DHUPKATHI 1",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 8,
+        "_id": "6a8968d6ec0add83a6c5f4fc"
+      }
+    ],
+    "subtotalAmount": 16,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 16,
+    "paymentMethod": "cash",
+    "receivedAmount": 20,
+    "changeAmount": 4,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-22T09:16:06.464Z",
+    "updatedAt": "2026-08-22T09:16:06.464Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a896903ec0add83a6c5f53a",
+    "invoiceNumber": "INV-20260822-5587",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 2.5,
+        "subtotal": 4,
+        "_id": "6a896903ec0add83a6c5f53b"
+      }
+    ],
+    "subtotalAmount": 4,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 4,
+    "paymentMethod": "upi",
+    "receivedAmount": 4,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-22T09:16:51.433Z",
+    "updatedAt": "2026-08-22T09:16:51.433Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a89693aec0add83a6c5f578",
+    "invoiceNumber": "INV-20260822-9547",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 8,
+        "unitPrice": 4,
+        "costPrice": 2.5,
+        "subtotal": 32,
+        "_id": "6a89693aec0add83a6c5f579"
+      }
+    ],
+    "subtotalAmount": 32,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 32,
+    "paymentMethod": "cash",
+    "receivedAmount": 32,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-22T09:17:46.270Z",
+    "updatedAt": "2026-08-22T09:17:46.270Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a897125ec0add83a6c5f7b8",
+    "invoiceNumber": "INV-20260822-8616",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "productName": "02. Register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 2.5,
+        "subtotal": 4,
+        "_id": "6a897125ec0add83a6c5f7b9"
+      }
+    ],
+    "subtotalAmount": 4,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 4,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 6,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-22T09:51:33.338Z",
+    "updatedAt": "2026-08-22T09:51:33.338Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a92626400ea64809b8fbe",
+    "invoiceNumber": "INV-20260823-6273",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f87d",
+        "productName": "A4 bundle",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 4,
+        "_id": "6a8a92626400ea64809b8fbf"
+      },
+      {
+        "product": "6a868e43aa81a6610e04f871",
+        "productName": "06. register",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 4,
+        "_id": "6a8a92626400ea64809b8fc0"
+      }
+    ],
+    "subtotalAmount": 8,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 8,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 2,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T06:25:38.596Z",
+    "updatedAt": "2026-08-23T06:25:38.596Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a935b6400ea64809b9052",
+    "invoiceNumber": "INV-20260823-7419",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f871",
+        "productName": "06. register",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 8,
+        "_id": "6a8a935b6400ea64809b9053"
+      }
+    ],
+    "subtotalAmount": 8,
+    "discountAmount": 2,
+    "taxAmount": 0,
+    "grandTotal": 6,
+    "paymentMethod": "cash",
+    "receivedAmount": 20,
+    "changeAmount": 14,
+    "cashier": "6a8a8ebe40fc6a9ec413991c",
+    "outlet": "Outlet 2",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T06:29:47.314Z",
+    "updatedAt": "2026-08-23T06:29:47.314Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d526b4ba2c309a36d1e",
+    "invoiceNumber": "INV-20260823-5760",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 2,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 330,
+        "_id": "6a8a9d526b4ba2c309a36d1f"
+      }
+    ],
+    "subtotalAmount": 330,
+    "discountAmount": 30,
+    "taxAmount": 0,
+    "grandTotal": 300,
+    "paymentMethod": "cash",
+    "receivedAmount": 400,
+    "changeAmount": 100,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Verified Cash Customer",
+    "createdAt": "2026-08-23T07:12:18.417Z",
+    "updatedAt": "2026-08-23T07:12:18.417Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d536b4ba2c309a36d2a",
+    "invoiceNumber": "INV-20260823-5161",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d536b4ba2c309a36d2b"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "upi",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 2",
+    "customerName": "UPI Customer",
+    "createdAt": "2026-08-23T07:12:19.342Z",
+    "updatedAt": "2026-08-23T07:12:19.342Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d556b4ba2c309a36d5a",
+    "invoiceNumber": "INV-20260823-3601",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d556b4ba2c309a36d5b"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "cash",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:12:21.256Z",
+    "updatedAt": "2026-08-23T07:12:21.256Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d556b4ba2c309a36d57",
+    "invoiceNumber": "INV-20260823-6233",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d556b4ba2c309a36d58"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "card",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:12:21.248Z",
+    "updatedAt": "2026-08-23T07:12:21.248Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d556b4ba2c309a36d5d",
+    "invoiceNumber": "INV-20260823-2567",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d556b4ba2c309a36d5e"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "upi",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 2",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:12:21.265Z",
+    "updatedAt": "2026-08-23T07:12:21.265Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9342e393dc1b172c98",
+    "invoiceNumber": "INV-20260823-6756",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 2,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 330,
+        "_id": "6a8a9d9342e393dc1b172c99"
+      }
+    ],
+    "subtotalAmount": 330,
+    "discountAmount": 30,
+    "taxAmount": 0,
+    "grandTotal": 300,
+    "paymentMethod": "cash",
+    "receivedAmount": 400,
+    "changeAmount": 100,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Verified Cash Customer",
+    "createdAt": "2026-08-23T07:13:23.614Z",
+    "updatedAt": "2026-08-23T07:13:23.614Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9442e393dc1b172ca3",
+    "invoiceNumber": "INV-20260823-8790",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d9442e393dc1b172ca4"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "upi",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 2",
+    "customerName": "UPI Customer",
+    "createdAt": "2026-08-23T07:13:24.100Z",
+    "updatedAt": "2026-08-23T07:13:24.100Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9542e393dc1b172cd4",
+    "invoiceNumber": "INV-20260823-7423",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d9542e393dc1b172cd5"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "card",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:13:25.796Z",
+    "updatedAt": "2026-08-23T07:13:25.796Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9542e393dc1b172cd7",
+    "invoiceNumber": "INV-20260823-4826",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d9542e393dc1b172cd8"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "upi",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 2",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:13:25.799Z",
+    "updatedAt": "2026-08-23T07:13:25.799Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9542e393dc1b172cda",
+    "invoiceNumber": "INV-20260823-1192",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 1,
+        "unitPrice": 165,
+        "costPrice": 60,
+        "subtotal": 165,
+        "_id": "6a8a9d9542e393dc1b172cdb"
+      }
+    ],
+    "subtotalAmount": 165,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 165,
+    "paymentMethod": "cash",
+    "receivedAmount": 165,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e676",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T07:13:25.804Z",
+    "updatedAt": "2026-08-23T07:13:25.804Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8ad8d68015884e10eea66b",
+    "invoiceNumber": "INV-20260823-5583",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f7f9",
+        "productName": "05/- Pen",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 8,
+        "_id": "6a8ad8d68015884e10eea66c"
+      }
+    ],
+    "subtotalAmount": 8,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 8,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 2,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T11:26:14.315Z",
+    "updatedAt": "2026-08-23T11:26:14.315Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8ad9c78015884e10eea6d1",
+    "invoiceNumber": "INV-20260823-5086",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f9ac",
+        "productName": "ABIR",
+        "quantity": 1,
+        "unitPrice": 7,
+        "costPrice": 5,
+        "subtotal": 7,
+        "_id": "6a8ad9c78015884e10eea6d2"
+      }
+    ],
+    "subtotalAmount": 7,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 7,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 3,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T11:30:15.581Z",
+    "updatedAt": "2026-08-23T11:30:15.581Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8b0432a761953825fc7689",
+    "invoiceNumber": "INV-20260823-8782",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f9a6",
+        "productName": "CHANDAN KATH 1",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 3,
+        "subtotal": 8,
+        "_id": "6a8b0432a761953825fc768a"
+      }
+    ],
+    "subtotalAmount": 8,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 8,
+    "paymentMethod": "cash",
+    "receivedAmount": 20,
+    "changeAmount": 12,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-23T14:31:14.715Z",
+    "updatedAt": "2026-08-23T14:31:14.715Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a92c285531304145e874d7f",
+    "invoiceNumber": "INV-20260829-6898",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f79c",
+        "productName": "Nail polish",
+        "quantity": 1,
+        "unitPrice": 2,
+        "costPrice": 1,
+        "subtotal": 2,
+        "_id": "6a92c285531304145e874d80"
+      },
+      {
+        "product": "6a868e42aa81a6610e04f75d",
+        "productName": "Eyeliner",
+        "quantity": 2,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 8,
+        "_id": "6a92c285531304145e874d81"
+      }
+    ],
+    "subtotalAmount": 10,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 10,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 0,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-29T11:29:09.841Z",
+    "updatedAt": "2026-08-29T11:29:09.841Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a93ed1c228bfb0b41015c2d",
+    "invoiceNumber": "INV-20260830-7599",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f75d",
+        "productName": "Eyeliner",
+        "quantity": 1,
+        "unitPrice": 4,
+        "costPrice": 4,
+        "subtotal": 4,
+        "_id": "6a93ed1c228bfb0b41015c2e"
+      },
+      {
+        "product": "6a868e43aa81a6610e04f973",
+        "productName": "KAPUR 1",
+        "quantity": 1,
+        "unitPrice": 3,
+        "costPrice": 2,
+        "subtotal": 3,
+        "_id": "6a93ed1c228bfb0b41015c2f"
+      }
+    ],
+    "subtotalAmount": 7,
+    "discountAmount": 0,
+    "taxAmount": 0,
+    "grandTotal": 7,
+    "paymentMethod": "cash",
+    "receivedAmount": 10,
+    "changeAmount": 3,
+    "cashier": "6a7dea6e6e22b21f12b0e67d",
+    "outlet": "Outlet 1",
+    "customerName": "Walk-in Customer",
+    "createdAt": "2026-08-30T08:43:08.366Z",
+    "updatedAt": "2026-08-30T08:43:08.366Z",
+    "__v": 0
+  }
+]

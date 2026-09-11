@@ -76,6 +76,19 @@ const createSale = async (req, res) => {
         });
       }
 
+      // Check if product has a valid selling price set ("no price, no sale")
+      if (updatedProduct.sellingPrice === null || updatedProduct.sellingPrice === undefined || updatedProduct.sellingPrice <= 0) {
+        // Rollback stock for this product and all prior products
+        await Product.findByIdAndUpdate(updatedProduct._id, { $inc: { currentStock: quantity } });
+        for (const rb of updatedProductsRollback) {
+          await Product.findByIdAndUpdate(rb.id, { $inc: { currentStock: rb.qty } });
+        }
+        return res.status(400).json({
+          success: false,
+          message: `Selling price not set for this product ('${updatedProduct.name}') — set it before selling.`
+        });
+      }
+
       // Record for rollback if later item fails
       updatedProductsRollback.push({ id: updatedProduct._id, qty: quantity });
 
@@ -87,7 +100,7 @@ const createSale = async (req, res) => {
         productName: updatedProduct.name,
         quantity,
         unitPrice: updatedProduct.sellingPrice,
-        costPrice: updatedProduct.costPrice,
+        costPrice: updatedProduct.costPrice || 0,
         subtotal: itemSubtotal
       });
 

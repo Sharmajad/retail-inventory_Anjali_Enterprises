@@ -1,0 +1,74 @@
+[
+  {
+    "_id": "6a7dec6748aa0d2db9bb4c0a",
+    "supplier": "6a7dead43878c25bfc481093",
+    "purchase": "6a7dec6748aa0d2db9bb4c03",
+    "amountPaid": 1000,
+    "paymentMode": "cash",
+    "notes": "Upfront payment for PO PO-20260813-5420",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-13T16:10:15.802Z",
+    "updatedAt": "2026-08-13T16:10:15.802Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a7dec6748aa0d2db9bb4c19",
+    "supplier": "6a7dead43878c25bfc481093",
+    "amountPaid": 1800,
+    "paymentMode": "bank_transfer",
+    "referenceNumber": "TXN9988776655",
+    "notes": "Cleared remaining balance for PO",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-13T16:10:15.885Z",
+    "updatedAt": "2026-08-13T16:10:15.885Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d566b4ba2c309a36d85",
+    "supplier": "6a8a9d566b4ba2c309a36d79",
+    "purchase": "6a8a9d566b4ba2c309a36d7e",
+    "amountPaid": 500,
+    "paymentMode": "cash",
+    "notes": "Upfront payment for PO PO-20260823-6231",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:12:22.933Z",
+    "updatedAt": "2026-08-23T07:12:22.933Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d576b4ba2c309a36d91",
+    "supplier": "6a8a9d566b4ba2c309a36d79",
+    "amountPaid": 500,
+    "paymentMode": "bank_transfer",
+    "referenceNumber": "IMPS-99887766",
+    "notes": "Partial payment to vendor",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:12:23.588Z",
+    "updatedAt": "2026-08-23T07:12:23.588Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9742e393dc1b172cff",
+    "supplier": "6a8a9d9742e393dc1b172cf3",
+    "purchase": "6a8a9d9742e393dc1b172cf8",
+    "amountPaid": 500,
+    "paymentMode": "cash",
+    "notes": "Upfront payment for PO PO-20260823-7620",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:13:27.637Z",
+    "updatedAt": "2026-08-23T07:13:27.637Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9842e393dc1b172d0b",
+    "supplier": "6a8a9d9742e393dc1b172cf3",
+    "amountPaid": 500,
+    "paymentMode": "bank_transfer",
+    "referenceNumber": "IMPS-99887766",
+    "notes": "Partial payment to vendor",
+    "recordedBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:13:28.638Z",
+    "updatedAt": "2026-08-23T07:13:28.638Z",
+    "__v": 0
+  }
+]

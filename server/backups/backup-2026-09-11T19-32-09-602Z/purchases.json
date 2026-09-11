@@ -1,0 +1,212 @@
+[
+  {
+    "_id": "6a7dec6748aa0d2db9bb4c03",
+    "purchaseOrderNumber": "PO-20260813-5420",
+    "supplier": "6a7dead43878c25bfc481093",
+    "items": [
+      {
+        "product": "6a7deb1b1aa0d09aafd5602f",
+        "quantity": 20,
+        "unitCostPrice": 140,
+        "subtotal": 2800,
+        "_id": "6a7dec6748aa0d2db9bb4c04"
+      }
+    ],
+    "totalAmount": 2800,
+    "paidAmount": 1000,
+    "balanceDue": 1800,
+    "paymentStatus": "partial",
+    "status": "received",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-13T16:10:15.768Z",
+    "updatedAt": "2026-08-13T16:10:15.768Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a869b8c7f1c63ca698b322f",
+    "purchaseOrderNumber": "PO-20260820-6565",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f86e",
+        "quantity": 10,
+        "unitCostPrice": 2.5,
+        "subtotal": 25,
+        "_id": "6a869b8c7f1c63ca698b3230"
+      },
+      {
+        "product": "6a868e42aa81a6610e04f7f9",
+        "quantity": 15,
+        "unitCostPrice": 3,
+        "subtotal": 45,
+        "_id": "6a869b8c7f1c63ca698b3231"
+      }
+    ],
+    "totalAmount": 70,
+    "paidAmount": 70,
+    "balanceDue": 0,
+    "paymentStatus": "paid",
+    "status": "received",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-20T06:15:40.147Z",
+    "updatedAt": "2026-08-20T06:15:40.147Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a869bd77f1c63ca698b3253",
+    "purchaseOrderNumber": "PO-20260820-4195",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f7e7",
+        "quantity": 7,
+        "unitCostPrice": 2,
+        "subtotal": 14,
+        "_id": "6a869bd77f1c63ca698b3254"
+      }
+    ],
+    "totalAmount": 14,
+    "paidAmount": 14,
+    "balanceDue": 0,
+    "paymentStatus": "paid",
+    "status": "received",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-20T06:16:55.663Z",
+    "updatedAt": "2026-08-20T06:16:55.663Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a869d2f115fa2d4d82e0d9b",
+    "purchaseOrderNumber": "PO-20260820-6685",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f943",
+        "productName": "ALTA",
+        "quantity": 10,
+        "unitCostPrice": 20,
+        "subtotal": 200,
+        "_id": "6a869d2f115fa2d4d82e0d9c"
+      }
+    ],
+    "totalAmount": 200,
+    "paidAmount": 200,
+    "balanceDue": 0,
+    "paymentStatus": "paid",
+    "status": "received",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-20T06:22:39.547Z",
+    "updatedAt": "2026-08-20T06:22:39.547Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a897162ec0add83a6c5f823",
+    "purchaseOrderNumber": "PO-20260822-3550",
+    "items": [
+      {
+        "product": "6a868e42aa81a6610e04f6f7",
+        "productName": "Alphabet set",
+        "quantity": 1,
+        "unitCostPrice": 2,
+        "subtotal": 2,
+        "_id": "6a897162ec0add83a6c5f824"
+      },
+      {
+        "product": "6a868e42aa81a6610e04f6e5",
+        "productName": "Animal set",
+        "quantity": 1,
+        "unitCostPrice": 4,
+        "subtotal": 4,
+        "_id": "6a897162ec0add83a6c5f825"
+      }
+    ],
+    "totalAmount": 6,
+    "paidAmount": 6,
+    "balanceDue": 0,
+    "paymentStatus": "paid",
+    "status": "received",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-22T09:52:34.909Z",
+    "updatedAt": "2026-08-22T09:52:34.909Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d566b4ba2c309a36d7e",
+    "purchaseOrderNumber": "PO-20260823-6231",
+    "supplier": "6a8a9d566b4ba2c309a36d79",
+    "items": [
+      {
+        "product": "6a8a9d4f6b4ba2c309a36cf5",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 20,
+        "unitCostPrice": 65,
+        "subtotal": 1300,
+        "_id": "6a8a9d566b4ba2c309a36d7f"
+      }
+    ],
+    "totalAmount": 1300,
+    "paidAmount": 500,
+    "balanceDue": 800,
+    "paymentStatus": "partial",
+    "status": "received",
+    "outlet": "Outlet 1",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:12:22.674Z",
+    "updatedAt": "2026-08-23T07:12:22.674Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9742e393dc1b172cf8",
+    "purchaseOrderNumber": "PO-20260823-7620",
+    "supplier": "6a8a9d9742e393dc1b172cf3",
+    "items": [
+      {
+        "product": "6a8a9d9042e393dc1b172c6e",
+        "productName": "E2E Verified Inventory Item (Updated)",
+        "quantity": 20,
+        "unitCostPrice": 65,
+        "subtotal": 1300,
+        "_id": "6a8a9d9742e393dc1b172cf9"
+      }
+    ],
+    "totalAmount": 1300,
+    "paidAmount": 500,
+    "balanceDue": 800,
+    "paymentStatus": "partial",
+    "status": "received",
+    "outlet": "Outlet 1",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-23T07:13:27.377Z",
+    "updatedAt": "2026-08-23T07:13:27.377Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a951e99d84e16cd4fd4d33c",
+    "purchaseOrderNumber": "PO-20260831-7067",
+    "items": [
+      {
+        "product": "6a868e43aa81a6610e04f871",
+        "productName": "06. register",
+        "quantity": 115,
+        "unitCostPrice": 20,
+        "subtotal": 2300,
+        "_id": "6a951e99d84e16cd4fd4d33d"
+      },
+      {
+        "product": "6a868e42aa81a6610e04f748",
+        "productName": "City gold bangles",
+        "quantity": 20,
+        "unitCostPrice": 100,
+        "subtotal": 2000,
+        "_id": "6a951e99d84e16cd4fd4d33e"
+      }
+    ],
+    "totalAmount": 4300,
+    "paidAmount": 4300,
+    "balanceDue": 0,
+    "paymentStatus": "paid",
+    "status": "received",
+    "outlet": "Outlet 1",
+    "createdBy": "6a7dea6e6e22b21f12b0e676",
+    "createdAt": "2026-08-31T06:26:33.120Z",
+    "updatedAt": "2026-08-31T06:26:33.120Z",
+    "__v": 0
+  }
+]

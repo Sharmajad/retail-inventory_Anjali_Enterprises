@@ -89,7 +89,7 @@ const createProduct = async (req, res) => {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { barcode, name, category, brand, unit, costPrice, sellingPrice, currentStock, lowStockThreshold } = req.body;
+  const { barcode, name, category, subCategory, brand, unit, costPrice, sellingPrice, currentStock, lowStockThreshold } = req.body;
 
   try {
     const categoryExists = await Category.findById(category);
@@ -108,10 +108,11 @@ const createProduct = async (req, res) => {
       barcode: barcode ? barcode.trim() : undefined,
       name: name.trim(),
       category,
+      subCategory: subCategory ? subCategory.trim() : null,
       brand: brand ? brand.trim() : undefined,
       unit: unit || 'pcs',
-      costPrice: parseFloat(costPrice),
-      sellingPrice: parseFloat(sellingPrice),
+      costPrice: (costPrice !== undefined && costPrice !== null && costPrice !== '') ? parseFloat(costPrice) : undefined,
+      sellingPrice: (sellingPrice !== undefined && sellingPrice !== null && sellingPrice !== '') ? parseFloat(sellingPrice) : undefined,
       currentStock: currentStock !== undefined ? parseInt(currentStock) : 0,
       lowStockThreshold: lowStockThreshold !== undefined ? parseInt(lowStockThreshold) : 5
     });
@@ -131,7 +132,7 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    const { barcode, name, category, brand, unit, costPrice, sellingPrice, currentStock, lowStockThreshold, isActive } = req.body;
+    const { barcode, name, category, subCategory, brand, unit, costPrice, sellingPrice, currentStock, lowStockThreshold, isActive } = req.body;
 
     if (category) {
       const categoryExists = await Category.findById(category);
@@ -150,10 +151,11 @@ const updateProduct = async (req, res) => {
     }
 
     if (name) product.name = name.trim();
+    if (subCategory !== undefined) product.subCategory = subCategory ? subCategory.trim() : null;
     if (brand !== undefined) product.brand = brand.trim();
     if (unit) product.unit = unit;
-    if (costPrice !== undefined) product.costPrice = parseFloat(costPrice);
-    if (sellingPrice !== undefined) product.sellingPrice = parseFloat(sellingPrice);
+    if (costPrice !== undefined) product.costPrice = (costPrice !== null && costPrice !== '') ? parseFloat(costPrice) : undefined;
+    if (sellingPrice !== undefined) product.sellingPrice = (sellingPrice !== null && sellingPrice !== '') ? parseFloat(sellingPrice) : undefined;
     if (currentStock !== undefined) product.currentStock = parseInt(currentStock);
     if (lowStockThreshold !== undefined) product.lowStockThreshold = parseInt(lowStockThreshold);
     if (typeof isActive === 'boolean') product.isActive = isActive;

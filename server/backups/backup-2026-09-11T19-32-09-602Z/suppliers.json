@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "6a7dead43878c25bfc481093",
+    "name": "Apex Beauty Distributors",
+    "contactPerson": "Rahul Sharma",
+    "phone": "9811223344",
+    "email": "apex@beauty.com",
+    "currentBalance": 15000,
+    "isActive": true,
+    "createdAt": "2026-08-13T16:03:32.681Z",
+    "updatedAt": "2026-08-13T16:10:15.881Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a7dead43878c25bfc481096",
+    "name": "Trendy Fashion Suppliers",
+    "contactPerson": "Priya Singh",
+    "phone": "9855667788",
+    "email": "trendy@fashion.com",
+    "currentBalance": 8500,
+    "isActive": true,
+    "createdAt": "2026-08-13T16:03:32.698Z",
+    "updatedAt": "2026-08-13T16:03:32.698Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d566b4ba2c309a36d79",
+    "name": "Quality National Traders",
+    "contactPerson": "Suresh Raina",
+    "phone": "9811223344",
+    "email": "suresh@nationaltraders.com",
+    "currentBalance": 300,
+    "isActive": true,
+    "createdAt": "2026-08-23T07:12:22.388Z",
+    "updatedAt": "2026-08-23T07:12:23.524Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a8a9d9742e393dc1b172cf3",
+    "name": "Quality National Traders",
+    "contactPerson": "Suresh Raina",
+    "phone": "9811223344",
+    "email": "suresh@nationaltraders.com",
+    "currentBalance": 300,
+    "isActive": true,
+    "createdAt": "2026-08-23T07:13:27.093Z",
+    "updatedAt": "2026-08-23T07:13:28.563Z",
+    "__v": 0
+  }
+]
