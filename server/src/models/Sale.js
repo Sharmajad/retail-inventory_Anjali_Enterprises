@@ -23,11 +23,23 @@ const saleSchema = new mongoose.Schema({
   outlet: { type: String, enum: ['Outlet 1', 'Outlet 2'], default: 'Outlet 1' },
   customerName: { type: String, default: 'Walk-in Customer' },
   customerPhone: { type: String },
-  notes: { type: String }
+  notes: { type: String },
+  status: { type: String, enum: ['NORMAL', 'EDITED', 'VOIDED'], default: 'NORMAL' },
+  editHistory: [{
+    editedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    editedAt: { type: Date, default: Date.now },
+    reason: { type: String, required: true },
+    beforeSnapshot: { type: mongoose.Schema.Types.Mixed },
+    afterSnapshot: { type: mongoose.Schema.Types.Mixed }
+  }],
+  voidedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  voidedAt: { type: Date },
+  voidReason: { type: String }
 }, { timestamps: true });
 
 saleSchema.index({ createdAt: -1 });
 saleSchema.index({ outlet: 1, createdAt: -1 });
 saleSchema.index({ cashier: 1 });
+saleSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Sale', saleSchema);

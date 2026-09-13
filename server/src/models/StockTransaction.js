@@ -4,7 +4,7 @@ const stockTransactionSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   type: { 
     type: String, 
-    enum: ['SALE', 'PURCHASE', 'ADJUSTMENT_ADD', 'ADJUSTMENT_SUBTRACT', 'RETURN'], 
+    enum: ['SALE', 'PURCHASE', 'ADJUSTMENT_ADD', 'ADJUSTMENT_SUBTRACT', 'RETURN', 'SALE_EDIT_ADJUSTMENT', 'SALE_VOID_REVERSAL'], 
     required: true 
   },
   quantityChange: { type: Number, required: true },

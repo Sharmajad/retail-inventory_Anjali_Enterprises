@@ -10,7 +10,8 @@ const getDashboardSummary = async (req, res) => {
     const { startOfDay, endOfDay } = getISTTodayRange();
 
     const filter = {
-      createdAt: { $gte: startOfDay, $lte: endOfDay }
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+      status: { $ne: 'VOIDED' }
     };
 
     if (outlet && outlet !== 'All') {
@@ -131,7 +132,8 @@ const getMonthlyStatistics = async (req, res) => {
     const { startOfMonth, endOfMonth } = getISTMonthRange(targetYear, targetMonth);
 
     const query = {
-      createdAt: { $gte: startOfMonth, $lte: endOfMonth }
+      createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      status: { $ne: 'VOIDED' }
     };
 
     if (outlet && outlet !== 'All') {
@@ -391,7 +393,9 @@ const getMonthlyStatistics = async (req, res) => {
 const getSalesAnalytics = async (req, res) => {
   try {
     const { startDate, endDate, outlet } = req.query;
-    const query = {};
+    const query = {
+      status: { $ne: 'VOIDED' }
+    };
 
     if (startDate || endDate) {
       query.createdAt = {};

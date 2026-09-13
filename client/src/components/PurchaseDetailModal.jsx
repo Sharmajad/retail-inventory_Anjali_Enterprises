@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Printer, Truck, Calendar, Clock, User, PackageCheck } from 'lucide-react';
 import { printPurchaseOrder } from '../utils/printReceipt';
 
@@ -33,30 +34,30 @@ export default function PurchaseDetailModal({ isOpen, onClose, purchase }) {
 
   const totalQty = purchase.items?.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0) || 0;
 
-  return (
-    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
       <div className="retail-card max-w-2xl w-full p-0 bg-white rounded-xl shadow-2xl overflow-hidden animate-fade-in flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="p-5 bg-[#FAF9F6] border-b border-[#E8E4DC] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B]">
-              <Truck className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="font-bold text-lg text-[#14324B]">Purchase Order Details</h2>
-                <span className="font-mono text-xs font-bold text-[#14324B] bg-white px-2.5 py-0.5 rounded border border-[#E8E4DC]">
-                  {purchase.purchaseOrderNumber}
-                </span>
+        <div className="px-5 py-4 bg-[#FAF9F6] border-b border-[#E8E4DC] relative flex items-center justify-center">
+          {/* Centered title block */}
+          <div className="flex flex-col items-center text-center gap-1">
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B] shrink-0">
+                <Truck className="w-4 h-4" />
               </div>
-              <p className="text-xs text-[#2B2926]/60 mt-0.5">Inventory restocking record</p>
+              <h2 className="font-bold text-lg text-[#14324B]">Purchase Order Details</h2>
+              <span className="font-mono text-xs font-bold text-[#14324B] bg-white px-2.5 py-0.5 rounded border border-[#E8E4DC]">
+                {purchase.purchaseOrderNumber}
+              </span>
             </div>
+            <p className="text-xs text-[#2B2926]/60">Inventory restocking record</p>
           </div>
           
+          {/* Close button anchored to top-right */}
           <button 
             onClick={onClose} 
-            className="p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -174,6 +175,7 @@ export default function PurchaseDetailModal({ isOpen, onClose, purchase }) {
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

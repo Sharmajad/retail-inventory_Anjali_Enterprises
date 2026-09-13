@@ -27,9 +27,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (identifierOrEmail, password) => {
     try {
-      const res = await api.post('/auth/login', { email, password });
+      const res = await api.post('/auth/login', {
+        identifier: identifierOrEmail,
+        password
+      });
       if (res.data.success) {
         const { token: t, user: u } = res.data;
         localStorage.setItem('token', t);
@@ -42,6 +45,22 @@ export const AuthProvider = ({ children }) => {
       return {
         success: false,
         message: err.response?.data?.message || err.message || 'Invalid credentials'
+      };
+    }
+  };
+
+  const changePassword = async (newPassword) => {
+    try {
+      const res = await api.put('/auth/change-password', { newPassword });
+      if (res.data.success) {
+        setUser(res.data.user);
+        return { success: true, message: res.data.message };
+      }
+      return { success: false, message: res.data.message };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || err.message || 'Failed to update password'
       };
     }
   };
@@ -78,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         token,
         loading,
         login,
+        changePassword,
         logout,
         switchAccount,
         isOwner,

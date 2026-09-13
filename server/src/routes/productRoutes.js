@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getProducts,
+  getSubcategories,
   getProductById,
   getProductByBarcode,
   createProduct,
@@ -15,6 +16,7 @@ const { productValidator } = require('../validators/productValidator');
 router.use(protect);
 
 router.get('/', getProducts);
+router.get('/subcategories', getSubcategories);
 router.get('/barcode/:barcode', getProductByBarcode);
 router.get('/:id', getProductById);
 

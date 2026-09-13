@@ -5,7 +5,7 @@ import { Store, Lock, Mail, ArrowRight, ShieldCheck, ShoppingCart, KeyRound, Ale
 
 export default function Login() {
   const [selectedPortal, setSelectedPortal] = useState('outlet1'); // 'outlet1' | 'outlet2' | 'owner' | 'custom'
-  const [email, setEmail] = useState('staff1@retail.com');
+  const [identifier, setIdentifier] = useState('staff1@retail.com');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -19,16 +19,20 @@ export default function Login() {
     setError('');
     setPassword('');
     if (portal === 'outlet1') {
-      setEmail('staff1@retail.com');
+      setIdentifier('staff1@retail.com');
     } else if (portal === 'outlet2') {
-      setEmail('staff2@retail.com');
+      setIdentifier('staff2@retail.com');
     } else if (portal === 'owner') {
-      setEmail('owner@retail.com');
+      setIdentifier('owner@retail.com');
     }
   };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    if (!identifier.trim()) {
+      setError('Please enter your phone number or email.');
+      return;
+    }
     if (!password) {
       setError('Please enter password.');
       return;
@@ -36,7 +40,7 @@ export default function Login() {
     setError('');
     setLoading(true);
 
-    const res = await login(email, password);
+    const res = await login(identifier.trim(), password);
     setLoading(false);
     if (res.success) {
       if (res.user?.role === 'staff') {
@@ -45,7 +49,7 @@ export default function Login() {
         navigate('/dashboard');
       }
     } else {
-      setError(res.message || 'Incorrect credentials. Please check your password and try again.');
+      setError(res.message || 'Incorrect credentials. Please check your login ID / password and try again.');
     }
   };
 
@@ -137,18 +141,18 @@ export default function Login() {
 
           <form onSubmit={handleLoginSubmit} className="space-y-3.5">
             <div>
-              <label className="form-label text-xs">Email Address</label>
+              <label className="form-label text-xs">Phone Number or Email</label>
               <div className="relative">
                 <input
-                  type="email"
+                  type="text"
                   required
-                  value={email}
+                  value={identifier}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setIdentifier(e.target.value);
                     setSelectedPortal('custom');
                   }}
                   className="form-input pl-9 text-xs font-medium"
-                  placeholder="Enter email..."
+                  placeholder="Enter phone number or email..."
                 />
                 <Mail className="w-4 h-4 text-[#2B2926]/40 absolute left-3 top-3" />
               </div>

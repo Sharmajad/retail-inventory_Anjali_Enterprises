@@ -1,10 +1,11 @@
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const getProducts = async (req, res) => {
   try {
-    const { category, search, lowStock, outlet, limit = 1000, page = 1 } = req.query;
+    const { category, subCategory, search, lowStock, outlet, limit = 1000, page = 1 } = req.query;
     const isStationaryScoped = (req.user?.role === 'staff' && req.user?.outlet === 'Outlet 1') || outlet === 'Outlet 1';
     const query = { isActive: true };
 
@@ -14,6 +15,10 @@ const getProducts = async (req, res) => {
       query.category = { $in: catIds };
     } else if (category) {
       query.category = category;
+    }
+
+    if (subCategory) {
+      query.subCategory = subCategory;
     }
 
     if (search) {
@@ -184,8 +189,42 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getSubcategories = async (req, res) => {
+  try {
+    const { category } = req.query;
+    const query = { isActive: true, subCategory: { $nin: [null, ''] } };
+
+    if (category) {
+      if (mongoose.Types.ObjectId.isValid(category)) {
+        query.category = category;
+      } else {
+        const catDoc = await Category.findOne({ name: { $regex: new RegExp(`^${category}$`, 'i') } });
+        if (catDoc) {
+          query.category = catDoc._id;
+        } else {
+          return res.status(200).json({ success: true, subcategories: [] });
+        }
+      }
+    }
+
+    const subcategories = await Product.distinct('subCategory', query);
+    const cleaned = subcategories
+      .filter(s => s && typeof s === 'string' && s.trim().length > 0)
+      .map(s => s.trim())
+      .sort((a, b) => a.localeCompare(b));
+
+    res.status(200).json({
+      success: true,
+      subcategories: cleaned
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   getProducts,
+  getSubcategories,
   getProductById,
   getProductByBarcode,
   createProduct,

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import api from '../services/api';
 import PurchaseDetailModal from '../components/PurchaseDetailModal';
 import {
@@ -394,41 +395,44 @@ function PurchaseFormModal({ onClose, onSuccess }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
       <div className="retail-card max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden animate-fade-in flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-4 bg-[#FAF9F6] border-b border-[#E8E4DC] flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B]">
-              <PackagePlus className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="font-bold text-lg text-[#14324B]">New Restock Batch</h2>
-              <p className="text-xs text-[#2B2926]/60 mt-0.5">
-                Select items from catalog to increase stock & update unit cost
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-lg border border-[#E8E4DC]">
-              <span className="text-xs font-bold text-[#14324B]">Outlet:</span>
-              <select
-                value={selectedOutlet}
-                onChange={e => handleOutletChange(e.target.value)}
-                className="text-xs font-semibold bg-transparent border-0 focus:outline-none cursor-pointer"
-              >
-                <option value="Outlet 1">Stationary Outlet</option>
-                <option value="Outlet 2">Outlet 2</option>
-              </select>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+        <div className="px-5 py-4 bg-[#FAF9F6] border-b border-[#E8E4DC] relative flex items-center justify-center">
+          {/* Outlet Picker on Left */}
+          <div className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 items-center gap-1.5 bg-white px-2.5 py-1 rounded-lg border border-[#E8E4DC] shadow-2xs">
+            <span className="text-xs font-bold text-[#14324B]">Outlet:</span>
+            <select
+              value={selectedOutlet}
+              onChange={e => handleOutletChange(e.target.value)}
+              className="text-xs font-semibold bg-transparent border-0 focus:outline-none cursor-pointer text-[#14324B]"
             >
-              <X className="w-5 h-5" />
-            </button>
+              <option value="Outlet 1">Stationary Outlet</option>
+              <option value="Outlet 2">Outlet 2</option>
+            </select>
           </div>
+
+          {/* Centered Title */}
+          <div className="flex flex-col items-center text-center gap-0.5">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B] shrink-0">
+                <PackagePlus className="w-4 h-4" />
+              </div>
+              <h2 className="font-bold text-lg text-[#14324B]">New Restock Batch</h2>
+            </div>
+            <p className="text-xs text-[#2B2926]/60">
+              Select items from catalog to increase stock & update unit cost
+            </p>
+          </div>
+
+          {/* Close button on Right */}
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {error && (
@@ -647,6 +651,7 @@ function PurchaseFormModal({ onClose, onSuccess }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

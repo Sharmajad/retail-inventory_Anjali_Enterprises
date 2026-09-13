@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ProductModal from '../components/ProductModal';
 import CategoryModal from '../components/CategoryModal';
 import StockAdjustModal from '../components/StockAdjustModal';
+import useCosmeticsSubcategories from '../hooks/useCosmeticsSubcategories';
 import { 
   Package, Plus, Search, Filter, AlertTriangle, 
   Tags, Edit2, Archive, Trash2, X, AlertCircle
@@ -12,6 +14,7 @@ import {
 export default function Products() {
   const { user, isOwner } = useAuth();
   const isStationaryStaff = user?.role === 'staff' && user?.outlet === 'Outlet 1';
+  const { subcategories: cosmeticsSubcategories } = useCosmeticsSubcategories();
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -20,6 +23,7 @@ export default function Products() {
   // Filters
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [subCategoryFilter, setSubCategoryFilter] = useState('');
   const [lowStockOnly, setLowStockOnly] = useState(false);
 
   // Modals
@@ -36,10 +40,16 @@ export default function Products() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
+  const selectedCatObj = categories.find(c => c._id === categoryFilter);
+  const isCosmeticsCategory = selectedCatObj ? /cosmetic/i.test(selectedCatObj.name) : false;
+
   const fetchData = async () => {
     setLoading(true);
     try {
       const params = { search, category: categoryFilter, lowStock: lowStockOnly };
+      if (isCosmeticsCategory && subCategoryFilter) {
+        params.subCategory = subCategoryFilter;
+      }
       if (isStationaryStaff) params.outlet = 'Outlet 1';
       const [prodRes, catRes] = await Promise.all([
         api.get('/products', { params }),
@@ -56,7 +66,7 @@ export default function Products() {
 
   useEffect(() => {
     fetchData();
-  }, [search, categoryFilter, lowStockOnly]);
+  }, [search, categoryFilter, subCategoryFilter, lowStockOnly]);
 
   const handleEdit = (p) => {
     setEditingProduct(p);
@@ -120,10 +130,32 @@ export default function Products() {
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           {!isStationaryStaff ? (
-            <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="form-input w-40 text-xs">
-              <option value="">All Categories</option>
-              {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
-            </select>
+            <>
+              <select
+                value={categoryFilter}
+                onChange={(e) => {
+                  setCategoryFilter(e.target.value);
+                  setSubCategoryFilter('');
+                }}
+                className="form-input w-40 text-xs"
+              >
+                <option value="">All Categories</option>
+                {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
+              </select>
+
+              {isCosmeticsCategory && (
+                <select
+                  value={subCategoryFilter}
+                  onChange={(e) => setSubCategoryFilter(e.target.value)}
+                  className="form-input w-44 text-xs animate-fade-in"
+                >
+                  <option value="">All Cosmetics</option>
+                  {cosmeticsSubcategories.map(sub => (
+                    <option key={sub} value={sub}>{sub}</option>
+                  ))}
+                </select>
+              )}
+            </>
           ) : (
             <div className="px-3 py-2 rounded bg-[#14324B]/10 border border-[#14324B]/20 text-[#14324B] text-xs font-bold">
               ✏️ Stationary Only
@@ -226,60 +258,67 @@ export default function Products() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {deletingProduct && (
-        <div className="fixed inset-0 bg-[#2B2926]/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="retail-card max-w-md w-full p-6 animate-fade-in text-[#2B2926] bg-white rounded-xl shadow-xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E8E4DC] mb-4">
+      {deletingProduct && createPortal(
+        <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+          <div className="retail-card max-w-md w-full p-0 animate-fade-in text-[#2B2926] bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="px-5 py-4 bg-[#FAF9F6] border-b border-[#E8E4DC] relative flex items-center justify-center">
               <div className="flex items-center gap-2 text-[#D64545]">
                 <Trash2 className="w-5 h-5" />
                 <h3 className="font-bold text-base">Confirm Delete Product</h3>
               </div>
-              <button onClick={() => setDeletingProduct(null)} className="btn-icon">
+              <button 
+                type="button" 
+                onClick={() => setDeletingProduct(null)} 
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {deleteError && (
-              <div className="mb-4 p-3 rounded bg-[#D64545]/10 border border-[#D64545]/30 text-[#D64545] text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                <span>{deleteError}</span>
+            <div className="p-6">
+              {deleteError && (
+                <div className="mb-4 p-3 rounded bg-[#D64545]/10 border border-[#D64545]/30 text-[#D64545] text-xs flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{deleteError}</span>
+                </div>
+              )}
+
+              <p className="text-sm text-[#2B2926]/80 mb-2">
+                Are you sure you want to delete <strong className="text-[#14324B]">{deletingProduct.name}</strong>?
+              </p>
+              <p className="text-xs text-[#2B2926]/60 mb-6 bg-[#FAF9F6] p-3 rounded border border-[#E8E4DC]">
+                ℹ️ This product will be deactivated and removed from the active catalog and POS checkout. Historic sales and purchase records will remain intact.
+              </p>
+
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeletingProduct(null)}
+                  disabled={isDeleting}
+                  className="btn-secondary text-xs py-2 px-4 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDelete}
+                  disabled={isDeleting}
+                  className="px-4 py-2 rounded-lg bg-[#D64545] hover:bg-[#D64545]/90 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  {isDeleting ? (
+                    <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete Product</span>
+                    </>
+                  )}
+                </button>
               </div>
-            )}
-
-            <p className="text-sm text-[#2B2926]/80 mb-2">
-              Are you sure you want to delete <strong className="text-[#14324B]">{deletingProduct.name}</strong>?
-            </p>
-            <p className="text-xs text-[#2B2926]/60 mb-6 bg-[#FAF9F6] p-3 rounded border border-[#E8E4DC]">
-              ℹ️ This product will be deactivated and removed from the active catalog and POS checkout. Historic sales and purchase records will remain intact.
-            </p>
-
-            <div className="flex items-center justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setDeletingProduct(null)}
-                disabled={isDeleting}
-                className="btn-secondary text-xs py-2 px-4 cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={confirmDelete}
-                disabled={isDeleting}
-                className="px-4 py-2 rounded-lg bg-[#D64545] hover:bg-[#D64545]/90 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm"
-              >
-                {isDeleting ? (
-                  <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                ) : (
-                  <>
-                    <Trash2 className="w-3.5 h-3.5" />
-                    <span>Delete Product</span>
-                  </>
-                )}
-              </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {isProductModalOpen && (

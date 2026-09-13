@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import api from '../services/api';
 import { X, Plus, Tags } from 'lucide-react';
 
@@ -31,15 +32,25 @@ export default function CategoryModal({ onClose }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-[#2B2926]/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="retail-card max-w-md w-full p-6 animate-fade-in text-[#2B2926]">
-        <div className="flex items-center justify-between pb-4 border-b border-[#E8E4DC] mb-4">
-          <h2 className="text-lg font-bold text-[#14324B] flex items-center gap-2">
-            <Tags className="w-5 h-5" /> Manage Categories
-          </h2>
-          <button onClick={onClose} className="btn-icon"><X className="w-5 h-5" /></button>
+  return createPortal(
+    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+      <div className="retail-card max-w-md w-full p-0 animate-fade-in text-[#2B2926] shadow-2xl overflow-hidden">
+        <div className="px-5 py-4 bg-[#FAF9F6] border-b border-[#E8E4DC] relative flex items-center justify-center">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-[#14324B]/10 flex items-center justify-center text-[#14324B]">
+              <Tags className="w-4 h-4" />
+            </div>
+            <h2 className="text-lg font-bold text-[#14324B]">Manage Categories</h2>
+          </div>
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
+        <div className="p-6 pt-5">
 
         <div className="mb-5 max-h-48 overflow-y-auto space-y-2">
           {categories.length === 0 ? (
@@ -68,7 +79,9 @@ export default function CategoryModal({ onClose }) {
             <Plus className="w-4 h-4" /> Add Category
           </button>
         </form>
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

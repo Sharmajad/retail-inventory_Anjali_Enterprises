@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import InvoiceModal from '../components/InvoiceModal';
+import useCosmeticsSubcategories from '../hooks/useCosmeticsSubcategories';
 import {
   ShoppingCart,
   Trash2,
@@ -16,11 +17,15 @@ import {
   Check,
   RotateCcw,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  X
 } from 'lucide-react';
 
 export default function POS() {
   const { user, isOwner } = useAuth();
+  const { subcategories: cosmeticsSubcategories } = useCosmeticsSubcategories();
   const [selectedOutlet, setSelectedOutlet] = useState(
     user?.outlet && user.outlet !== 'All' ? user.outlet : 'Outlet 1'
   );
@@ -28,8 +33,22 @@ export default function POS() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [selectedSubCategory, setSelectedSubCategory] = useState('ALL');
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
+  const [subCategorySearch, setSubCategorySearch] = useState('');
+  const subCategoryRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loadingProducts, setLoadingProducts] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (subCategoryRef.current && !subCategoryRef.current.contains(e.target)) {
+        setIsSubCategoryOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Payment State
   const [discount, setDiscount] = useState(0);
@@ -81,6 +100,7 @@ export default function POS() {
 
   const handleOutletSwitch = (newOutlet) => {
     setSelectedOutlet(newOutlet);
+    setSelectedSubCategory('ALL');
     if (newOutlet === 'Outlet 1') {
       // Find non-stationary items in cart
       const nonStationary = cart.filter(item => !isProductStationary(item.product));
@@ -96,22 +116,54 @@ export default function POS() {
           setSelectedCategory('ALL');
         }
       }
+    } else {
+      // Outlet 2
+      const stationary = cart.filter(item => isProductStationary(item.product));
+      if (stationary.length > 0) {
+        setCart(prev => prev.filter(item => !isProductStationary(item.product)));
+        setError(`Removed ${stationary.length} item(s) from cart. Outlet 2 does not sell Stationary items.`);
+        setTimeout(() => setError(''), 4000);
+      }
+      // If selected category is stationary, reset to ALL
+      if (selectedCategory !== 'ALL') {
+        const currentCat = categories.find(c => c._id === selectedCategory);
+        if (currentCat && isStationaryCategory(currentCat)) {
+          setSelectedCategory('ALL');
+        }
+      }
     }
   };
 
   // Filtered product list
   const isOutlet1 = selectedOutlet === 'Outlet 1';
-  const availableCategories = isOutlet1 ? categories.filter(isStationaryCategory) : categories;
+  const availableCategories = isOutlet1
+    ? categories.filter(isStationaryCategory)
+    : categories.filter(c => !isStationaryCategory(c));
+
+  const selectedCatObj = categories.find(c => c._id === selectedCategory);
+  const isCosmeticsSelected = selectedCatObj ? /cosmetic/i.test(selectedCatObj.name) : false;
 
   const visibleProducts = products.filter(p => {
     // If Outlet 1, product MUST be Stationary
     if (isOutlet1 && !isProductStationary(p)) {
       return false;
     }
+    // If Outlet 2, product MUST NOT be Stationary
+    if (!isOutlet1 && isProductStationary(p)) {
+      return false;
+    }
 
     const catMatch =
       selectedCategory === 'ALL' ||
       (p.category && (p.category._id === selectedCategory || p.category === selectedCategory));
+
+    // If Cosmetics category is selected, narrow to chosen subcategory
+    if (isCosmeticsSelected && selectedSubCategory !== 'ALL') {
+      if (p.subCategory !== selectedSubCategory) {
+        return false;
+      }
+    }
+
     const searchMatch =
       !searchQuery.trim() ||
       p.name.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
@@ -123,6 +175,11 @@ export default function POS() {
     setError('');
     if (isOutlet1 && !isProductStationary(product)) {
       setError(`Cannot add "${product.name}". Outlet 1 only sells Stationary products.`);
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+    if (!isOutlet1 && isProductStationary(product)) {
+      setError(`Cannot add "${product.name}". Outlet 2 does not sell Stationary products.`);
       setTimeout(() => setError(''), 3000);
       return;
     }
@@ -532,49 +589,163 @@ export default function POS() {
             </div>
           </div>
 
-          {/* Category Quick Filter */}
-          <div className="retail-card p-2.5 bg-white border border-[#E8E4DC]">
-            {isOutlet1 && (
-              <div className="mb-2 px-2 py-1 rounded bg-[#E8A33D]/10 border border-[#E8A33D]/30 text-[#E8A33D] text-[11px] font-bold flex items-center gap-1.5">
-                <span>✏️</span>
-                <span>Outlet 1 sells Stationary items exclusively</span>
-              </div>
-            )}
-            <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('ALL')}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                  selectedCategory === 'ALL'
-                    ? 'bg-[#14324B] text-white shadow-xs'
-                    : 'bg-[#FAF9F6] text-[#2B2926]/70 border border-[#E8E4DC] hover:border-[#14324B]'
-                }`}
-              >
-                All {isOutlet1 ? 'Stationary' : ''}
-              </button>
-              {availableCategories.map(cat => (
+          {/* Category Quick Filter — only shown for Outlet 2 (multiple categories) */}
+          {!isOutlet1 && (
+            <div className="retail-card p-2.5 bg-white border border-[#E8E4DC]">
+              <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
                 <button
-                  key={cat._id}
                   type="button"
-                  onClick={() => setSelectedCategory(cat._id)}
+                  onClick={() => {
+                    setSelectedCategory('ALL');
+                    setSelectedSubCategory('ALL');
+                  }}
                   className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                    selectedCategory === cat._id
+                    selectedCategory === 'ALL'
                       ? 'bg-[#14324B] text-white shadow-xs'
                       : 'bg-[#FAF9F6] text-[#2B2926]/70 border border-[#E8E4DC] hover:border-[#14324B]'
                   }`}
                 >
-                  {cat.name}
+                  All
                 </button>
-              ))}
+                {availableCategories.map(cat => (
+                  <button
+                    key={cat._id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(cat._id);
+                      setSelectedSubCategory('ALL');
+                      setIsSubCategoryOpen(false);
+                      setSubCategorySearch('');
+                    }}
+                    className={`px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                      selectedCategory === cat._id
+                        ? 'bg-[#14324B] text-white shadow-xs'
+                        : 'bg-[#FAF9F6] text-[#2B2926]/70 border border-[#E8E4DC] hover:border-[#14324B]'
+                    }`}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+
+              {/* Custom Styled Subcategory Dropdown — matching website aesthetics */}
+              {isCosmeticsSelected && (
+                <div className="pt-2.5 mt-2.5 border-t border-[#E8E4DC] flex items-center gap-2.5 animate-fade-in">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14324B] shrink-0 bg-[#FAF9F6] px-2.5 py-1.5 rounded-md border border-[#E8E4DC]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#E8A33D]" />
+                    <span>Subcategory:</span>
+                  </div>
+
+                  <div className="relative flex-1" ref={subCategoryRef}>
+                    <button
+                      type="button"
+                      onClick={() => setIsSubCategoryOpen(!isSubCategoryOpen)}
+                      className="w-full bg-white hover:bg-[#FAF9F6] text-xs font-semibold text-[#14324B] border border-[#E8E4DC] hover:border-[#14324B]/40 focus:border-[#14324B] rounded-md py-1.5 px-3 shadow-2xs transition-all flex items-center justify-between cursor-pointer"
+                    >
+                      <span className="truncate">
+                        {selectedSubCategory === 'ALL'
+                          ? `All Cosmetics (${cosmeticsSubcategories.length})`
+                          : selectedSubCategory}
+                      </span>
+                      <ChevronUp
+                        className={`w-4 h-4 text-[#14324B]/60 transition-transform duration-200 shrink-0 ml-2 ${
+                          isSubCategoryOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+
+                    {isSubCategoryOpen && (
+                      <div className="absolute left-0 bottom-full mb-1.5 w-full bg-white rounded-lg shadow-2xl border border-[#E8E4DC] z-50 overflow-hidden animate-fade-in">
+                        {/* Search inside subcategory options */}
+                        <div className="p-2 border-b border-[#E8E4DC] bg-[#FAF9F6]">
+                          <div className="relative">
+                            <Search className="w-3.5 h-3.5 text-[#2B2926]/40 absolute left-2.5 top-2.5" />
+                            <input
+                              type="text"
+                              autoFocus
+                              value={subCategorySearch}
+                              onChange={e => setSubCategorySearch(e.target.value)}
+                              placeholder="Search subcategory..."
+                              className="w-full bg-white border border-[#E8E4DC] rounded text-xs pl-8 pr-2.5 py-1.5 outline-none focus:border-[#14324B] text-[#14324B] placeholder-[#2B2926]/40"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="max-h-56 overflow-y-auto p-1.5 space-y-0.5">
+                          {/* All Cosmetics option */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedSubCategory('ALL');
+                              setIsSubCategoryOpen(false);
+                              setSubCategorySearch('');
+                            }}
+                            className={`w-full text-left px-2.5 py-1.5 rounded text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                              selectedSubCategory === 'ALL'
+                                ? 'bg-[#14324B] text-white'
+                                : 'text-[#2B2926] hover:bg-[#FAF9F6]'
+                            }`}
+                          >
+                            <span>All Cosmetics ({cosmeticsSubcategories.length})</span>
+                            {selectedSubCategory === 'ALL' && <Check className="w-3.5 h-3.5" />}
+                          </button>
+
+                          {/* Filtered Subcategories list */}
+                          {cosmeticsSubcategories
+                            .filter(sub => sub.toLowerCase().includes(subCategorySearch.toLowerCase()))
+                            .map(sub => (
+                              <button
+                                key={sub}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedSubCategory(sub);
+                                  setIsSubCategoryOpen(false);
+                                  setSubCategorySearch('');
+                                }}
+                                className={`w-full text-left px-2.5 py-1.5 rounded text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                                  selectedSubCategory === sub
+                                    ? 'bg-[#14324B] text-white font-bold'
+                                    : 'text-[#2B2926] hover:bg-[#FAF9F6]'
+                                }`}
+                              >
+                                <span>{sub}</span>
+                                {selectedSubCategory === sub && <Check className="w-3.5 h-3.5" />}
+                              </button>
+                            ))}
+
+                          {cosmeticsSubcategories.filter(sub => sub.toLowerCase().includes(subCategorySearch.toLowerCase())).length === 0 && (
+                            <div className="py-3 text-center text-xs text-[#2B2926]/40">
+                              No matching subcategory
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Products Grid */}
           <div className="retail-card overflow-hidden bg-white border border-[#E8E4DC] flex-1 flex flex-col min-h-[400px]">
             <div className="p-3 border-b border-[#E8E4DC] bg-[#FAF9F6] flex items-center justify-between">
-              <span className="font-bold text-xs text-[#14324B]">
-                {selectedCategory === 'ALL' ? (isOutlet1 ? 'Stationary Products (Outlet 1)' : 'All Catalog Products') : availableCategories.find(c => c._id === selectedCategory)?.name || 'Products'}
-              </span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-bold text-xs text-[#14324B]">
+                  {selectedCategory === 'ALL'
+                    ? 'All Products'
+                    : availableCategories.find(c => c._id === selectedCategory)?.name || 'Products'}
+                </span>
+                {isCosmeticsSelected && selectedSubCategory !== 'ALL' && (
+                  <>
+                    <span className="text-xs text-[#2B2926]/40">›</span>
+                    <span className="text-xs font-bold text-[#14324B] bg-white px-2 py-0.5 rounded border border-[#E8E4DC] shadow-2xs flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-[#E8A33D]" />
+                      {selectedSubCategory}
+                    </span>
+                  </>
+                )}
+              </div>
               <span className="text-[11px] font-mono text-[#2B2926]/50">{visibleProducts.length} items available</span>
             </div>
 

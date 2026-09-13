@@ -16,10 +16,16 @@ const login = async (req, res) => {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
 
-  const { email, password } = req.body;
+  const identifier = (req.body.identifier || req.body.email || req.body.phone || '').trim();
+  const { password } = req.body;
 
   try {
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({
+      $or: [
+        { email: identifier.toLowerCase() },
+        { phone: identifier }
+      ]
+    });
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
@@ -46,8 +52,43 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        outlet: user.outlet || 'Outlet 1',
-        phone: user.phone
+        outlet: user.outlet || (user.role === 'owner' ? 'All' : 'Outlet 1'),
+        phone: user.phone,
+        mustChangePassword: user.mustChangePassword || false
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const changePassword = async (req, res) => {
+  const { newPassword } = req.body;
+  if (!newPassword || newPassword.trim().length < 6) {
+    return res.status(400).json({ success: false, message: 'New password must be at least 6 characters' });
+  }
+
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.password = newPassword.trim();
+    user.mustChangePassword = false;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        outlet: user.outlet,
+        phone: user.phone,
+        mustChangePassword: false
       }
     });
   } catch (error) {
@@ -64,7 +105,8 @@ const getMe = async (req, res) => {
       email: req.user.email,
       role: req.user.role,
       outlet: req.user.outlet || (req.user.role === 'owner' ? 'All' : 'Outlet 1'),
-      phone: req.user.phone
+      phone: req.user.phone,
+      mustChangePassword: req.user.mustChangePassword || false
     }
   });
 };
@@ -107,4 +149,4 @@ const seedOwner = async (req, res) => {
   }
 };
 
-module.exports = { login, getMe, seedOwner };
+module.exports = { login, getMe, seedOwner, changePassword };

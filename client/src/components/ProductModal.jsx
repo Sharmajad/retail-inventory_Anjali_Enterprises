@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import api from '../services/api';
 import { X, Trash2 } from 'lucide-react';
 
@@ -35,13 +36,20 @@ export default function ProductModal({ product, categories, onClose, onSuccess, 
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-[#2B2926]/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="retail-card max-w-lg w-full p-6 animate-fade-in text-[#2B2926] max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between pb-4 border-b border-[#E8E4DC] mb-5">
+  return createPortal(
+    <div className="fixed inset-0 bg-[#2B2926]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+      <div className="retail-card max-w-lg w-full p-0 animate-fade-in text-[#2B2926] max-h-[90vh] overflow-y-auto">
+        <div className="px-5 py-4 bg-[#FAF9F6] border-b border-[#E8E4DC] relative flex items-center justify-center">
           <h2 className="text-lg font-bold text-[#14324B]">{product ? 'Edit Product' : 'Add New Product'}</h2>
-          <button onClick={onClose} className="btn-icon"><X className="w-5 h-5" /></button>
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[#2B2926]/40 hover:text-[#D64545] hover:bg-[#D64545]/10 transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
+        <div className="p-6 pt-5">
         {error && <div className="mb-4 text-[#D64545] text-sm bg-[#D64545]/10 p-3 rounded">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -111,7 +119,9 @@ export default function ProductModal({ product, categories, onClose, onSuccess, 
             </button>
           </div>
         </form>
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

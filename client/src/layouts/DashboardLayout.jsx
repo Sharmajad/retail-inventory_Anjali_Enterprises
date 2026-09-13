@@ -17,8 +17,10 @@ import {
   ArrowLeftRight,
   Lock,
   KeyRound,
-  AlertCircle
+  AlertCircle,
+  Download
 } from 'lucide-react';
+import ChangePasswordModal from '../components/ChangePasswordModal';
 
 export default function DashboardLayout() {
   const { user, logout, isOwner, switchAccount, login } = useAuth();
@@ -88,7 +90,8 @@ export default function DashboardLayout() {
     { label: 'Sales History',      path: '/sales',      icon: Receipt,         ownerOnly: false },
     { label: 'Purchases & Restock',path: '/purchases',  icon: Truck,           ownerOnly: true  },
     { label: 'Business Reports',   path: '/reports',    icon: BarChart3,       ownerOnly: true  },
-    { label: 'Staff Users',        path: '/users',      icon: UserCircle2,     ownerOnly: true  }
+    { label: 'Staff Users',        path: '/users',      icon: UserCircle2,     ownerOnly: true  },
+    { label: 'Export Data',        path: '/export',     icon: Download,        ownerOnly: true  }
   ];
 
   const currentOutletLabel = isOwner
@@ -343,6 +346,9 @@ export default function DashboardLayout() {
           </div>
         </div>
       )}
+
+      {/* Force Change Password Modal if mustChangePassword is true */}
+      <ChangePasswordModal isOpen={!!user?.mustChangePassword} />
     </div>
   );
 }
